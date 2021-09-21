@@ -20,11 +20,13 @@ CKEDITOR.plugins.addExternal('ckeditor_wiris', `${window.location.href}node_modu
 // Initialize plugin.
 CKEDITOR.replace('editor', { //eslint-disable-line
   extraPlugins: 'ckeditor_wiris',
+  // Allow MathML content.
   allowedContent: true,
   toolbar: [
     { name: 'basicstyles', items: ['Bold', 'Italic', 'Strike'] },
     { name: 'clipboard', items: ['Undo', 'Redo'] },
     { name: 'wirisplugins', items: ['ckeditor_wiris_formulaEditor', 'ckeditor_wiris_formulaEditorChemistry'] },
+    { name: 'others' },
   ],
   // language: 'de',
   // mathTypeParameters: {

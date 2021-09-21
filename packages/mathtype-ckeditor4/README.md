@@ -29,24 +29,23 @@ Easily include quality math equations in your documents and digital content.
    CKEDITOR.plugins.addExternal('ckeditor_wiris', '../node_modules/@wiris/mathtype-ckeditor4/', 'plugin.js');
    ```
 
-3. Update the CKEditor configuration by adding the new plugin and allowing MathML content:
+3. Update the CKEditor configuration by adding the new plugin, allowing MathML content and adding the MathType and ChemType buttons to the toolbar:
 
    ```js
-   CKEDITOR.editorConfig = function (config) {
-       extraPlugins = 'ckeditor_wiris';
-       // Allow MathML content.
-       allowedContent = true;
-   };
-   ```
-
-4. Add MathType and ChemType buttons to the toolbar, just in case you want to modify it
-
-   ```js
-   CKEDITOR.editorConfig = function (config) {
-       config.toolbar = [
-         {name: 'wirisplugins', items: ['ckeditor_wiris_formulaEditor', 'ckeditor_wiris_formulaEditorChemistry']}
-       ];
-   };
+   CKEDITOR.replace('editor', { //eslint-disable-line
+      extraPlugins: 'ckeditor_wiris',
+      // Allow MathML content.
+      allowedContent: true,
+      toolbar: [
+         { name: 'wirisplugins', items: ['ckeditor_wiris_formulaEditor', 'ckeditor_wiris_formulaEditorChemistry'] },
+         // To avoid errors and have mathtype fully functional
+         { name: 'others' },
+      ],
+      // language: 'de',
+      // mathTypeParameters: {
+      //   editorParameters: { language: 'es' }, // MathType config, including language
+      // },
+   });
    ```
 
    Notice the example assumes this directory structure:
