@@ -158,7 +158,8 @@ export default class CKEditor5Integration extends IntegrationModel {
         const viewSelection = this.core.editionProperties.selection || this.editorObject.editing.view.document.selection;
         const modelPosition = this.editorObject.editing.mapper.toModelPosition(viewSelection.getLastPosition());
 
-        this.editorObject.model.insertObject(modelElementNew, modelPosition);
+        // writer.setSelection(modelPosition);
+        this.editorObject.model.insertObject(modelElementNew, modelPosition, null, { setSelection: 'after' });
 
         // Remove selection
         if (!viewSelection.isCollapsed) {
@@ -168,8 +169,8 @@ export default class CKEditor5Integration extends IntegrationModel {
         }
 
         // Set carret after the formula
-        const position = this.editorObject.model.createPositionAfter(modelElementNew);
-        writer.setSelection(position);
+        // const position = this.editorObject.model.createPositionAfter(modelElementNew);
+        // writer.setSelection(position);
       } else {
         const img = core.editionProperties.temporalImage;
         const viewElement = this.editorObject.editing.view.domConverter.domToView(img).parent;
