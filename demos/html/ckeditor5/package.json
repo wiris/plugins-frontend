@@ -18,6 +18,8 @@
     "@ckeditor/ckeditor5-essentials": ">=39.0.0",
     "@ckeditor/ckeditor5-paragraph": ">=39.0.0",
     "@ckeditor/ckeditor5-theme-lark": ">=39.0.0",
+    "@ckeditor/ckeditor5-image": ">=39.0.0",
+    "@ckeditor/ckeditor5-font": ">=39.0.0",
     "@wiris/mathtype-ckeditor5": "*",
     "@wiris/mathtype-html-integration-devkit": "*"
   },

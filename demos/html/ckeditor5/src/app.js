@@ -6,6 +6,8 @@ import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
 import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic';
 import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment';
 import MathType from '@wiris/mathtype-ckeditor5/src/plugin';
+import Font from '@ckeditor/ckeditor5-font/src/font';
+import { Image, ImageCaption, ImageResize, ImageStyle, ImageToolbar } from '@ckeditor/ckeditor5-image';
 
 // Load styles.
 import './static/style.css';
@@ -31,12 +33,24 @@ window.editor = null;
 // Create the CKEditor 5.
 ClassicEditor
   .create(document.querySelector('#editor'), {
-    plugins: [Essentials, Paragraph, Bold, Italic, MathType, Alignment],
-    toolbar: ['bold', 'italic', 'MathType', 'ChemType', 'alignment:left', 'alignment:center', 'alignment:right'],
+    plugins: [Essentials, Paragraph, Bold, Italic, MathType, Alignment, Image, ImageToolbar, ImageCaption, ImageStyle, ImageResize, Font],
+    toolbar: ['fontFamily','bold', 'italic', 'MathType', 'ChemType', 'alignment:left', 'alignment:center', 'alignment:right', 'imageStyle:block',
+    'imageStyle:side',
+    '|',
+    'toggleImageCaption',
+    'imageTextAlternative'],
     // language: 'de',
     // mathTypeParameters: {
     //   editorParameters: { language: 'es' }, // MathType config, including language
     // },
+    fontFamily: {
+      options: [
+          'default',
+          'Ubuntu, Arial, sans-serif',
+          'Ubuntu Mono, Courier New, Courier, monospace'
+      ]
+  },
+
   })
   .then((editor) => {
     window.editor = editor;
