@@ -20,7 +20,7 @@
 </p>`;
 
     window.document.addEventListener('viewerLoaded', () => {
-      // window.viewer.Properties can be modified here
+      // window.viewer.properties can be modified here
       // Changes are reflected live
     });
 
@@ -46,22 +46,22 @@
       MathType Viewer version: <output id="version"></output>
       <form>
         <label for="wiriseditormathmlattribute">wiriseditormathmlattribute:</label>
-        <input name="wiriseditormathmlattribute" id="wiriseditormathmlattribute" oninput="resetContent(); window.viewer.Properties.wiriseditormathmlattribute = event.target.value;"
+        <input name="wiriseditormathmlattribute" id="wiriseditormathmlattribute" oninput="resetContent(); window.viewer.properties.wiriseditormathmlattribute = event.target.value;"
           type="text" value="data-mathml"/>
         <br/>
 
         <label for="wirispluginperformance">wirispluginperformance:</label>
-        <input name="wirispluginperformance" id="wirispluginperformance" oninput="resetContent(); window.viewer.Properties.wirispluginperformance = event.target.value;"
+        <input name="wirispluginperformance" id="wirispluginperformance" oninput="resetContent(); window.viewer.properties.wirispluginperformance = event.target.value;"
           type="checkbox" checked/>
         <br/>
 
         <label for="editorServicesRoot">editorServicesRoot:</label>
-        <input name="editorServicesRoot" id="editorServicesRoot" oninput="resetContent(); window.viewer.Properties.editorServicesRoot = event.target.value;"
+        <input name="editorServicesRoot" id="editorServicesRoot" oninput="resetContent(); window.viewer.properties.editorServicesRoot = event.target.value;"
           type="text" value="https://www.wiris.net/demo/plugins/app/"/>
         <br/>
 
         <label for="viewer">Viewer:</label>
-        <select name="viewer" id="viewer" onchange="resetContent(); window.viewer.Properties.viewer = event.target.value;">
+        <select name="viewer" id="viewer" onchange="resetContent(); window.viewer.properties.viewer = event.target.value;">
           <option value="none">none</option>
           <option value="image" selected>image</option>
           <option value="mathml">mathml</option>
@@ -70,23 +70,23 @@
         <br/>
 
         <label for="element">Element:</label>
-        <input name="element" id="element" oninput="resetContent(); window.viewer.Properties.element = event.target.value;"
+        <input name="element" id="element" oninput="resetContent(); window.viewer.properties.element = event.target.value;"
           type="text" value="main"/>
         <br/>
 
         <label for="lang">Language:</label>
-        <input name="lang" id="lang" oninput="resetContent(); window.viewer.Properties.lang = event.target.value;"
+        <input name="lang" id="lang" oninput="resetContent(); window.viewer.properties.lang = event.target.value;"
           type="text" value="en"/>
         <br/>
 
         <label for="dpi">DPI:</label>
-        <input name="dpi" id="dpi" onchange="resetContent(); window.viewer.Properties.dpi = +event.target.value;" oninput="document.getElementById('dpiOutput').innerText = event.target.value"
+        <input name="dpi" id="dpi" onchange="resetContent(); window.viewer.properties.dpi = +event.target.value;" oninput="document.getElementById('dpiOutput').innerText = event.target.value"
           type="range" min="0" max="100" value="96"/>
         <output id="dpiOutput">96</output>
         <br/>
 
         <label for="zoom">Zoom:</label>
-        <input name="zoom" id="zoom" onchange="resetContent(); window.viewer.Properties.zoom = +event.target.value;" oninput="document.getElementById('zoomOutput').innerText = event.target.value"
+        <input name="zoom" id="zoom" onchange="resetContent(); window.viewer.properties.zoom = +event.target.value;" oninput="document.getElementById('zoomOutput').innerText = event.target.value"
           type="range" min="0" max="10" step="0.01" value="1"/>
         <output id="zoomOutput">1</output>
         <br/>

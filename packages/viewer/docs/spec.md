@@ -93,8 +93,8 @@ The place depends on each specific property.
     <script src="dist/WIRISplugins.js" defer></script>
     <script>
       window.document.addEventListener('viewerLoaded', () => {
-        window.viewer.Properties.key1 = value1;
-        window.viewer.Properties.key2 = value2;
+        window.viewer.properties.key1 = value1;
+        window.viewer.properties.key2 = value2;
         // ...
       });
     </script>
