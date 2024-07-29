@@ -4,6 +4,7 @@ import { renderMathML } from "./mathml";
 import { bypassEncapsulation } from "./retro";
 import packageInformation from "../../../node_modules/@wiris/mathtype-viewer/package.json";
 import mathmlRenderer from "./renderers/mathml-renderer";
+import latex from "./utils/latex";
 
 declare global {
   interface Window {
@@ -62,6 +63,8 @@ async function main(): Promise<void> {
 
   const { render } = mathmlRenderer(properties);
 
+  const { findNodesContainingLatex } = latex(properties);
+
   // TODO
   const renderMath = (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
     entries.forEach((entry) => {
@@ -81,6 +84,10 @@ async function main(): Promise<void> {
   const mathmls = document.querySelectorAll("math");
 
   mathmls.forEach((m) => mathObserver.observe(m));
+
+  const nodesContainingLatex = findNodesContainingLatex();
+
+  nodesContainingLatex.forEach((n) => console.log(n.textContent));
 }
 
 // This should be the only code executed outside of a function
