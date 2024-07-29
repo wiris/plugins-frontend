@@ -63,11 +63,12 @@ async function main(): Promise<void> {
   const { render } = mathmlRenderer(properties);
 
   // TODO
-  const renderMath = (entries: IntersectionObserverEntry[]) => {
+  const renderMath = (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
     entries.forEach((entry) => {
-      render(entry.target as MathMLElement);
-
-      mathObserver.unobserve(entry.target);
+      if (entry.intersectionRatio > 0) {
+        render(entry.target as MathMLElement);
+        observer.unobserve(entry.target);
+      }
     });
   };
 
