@@ -23,7 +23,6 @@ const mathmlRenderer = (viewerProperties: Properties) => {
    * @returns
    */
   const render = async (mathmlElement: MathMLElement): Promise<void> => {
-    console.log(`rendering mahtml: ${mathmlElement.outerHTML}`);
     if (properties.viewer !== "image" && properties.viewer !== "mathml") {
       return;
     }

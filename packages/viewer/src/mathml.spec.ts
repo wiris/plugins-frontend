@@ -1,4 +1,3 @@
-import { JSDOM } from "jsdom";
 import { serializeHtmlToXml } from "./mathml"; // adjust the import path as needed
 
 describe("serializeHtmlToXml", () => {
