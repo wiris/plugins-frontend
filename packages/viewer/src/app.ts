@@ -3,6 +3,7 @@ import { renderLatex } from "./latex";
 import { renderMathML } from "./mathml";
 import { bypassEncapsulation } from "./retro";
 import packageInformation from "../../../node_modules/@wiris/mathtype-viewer/package.json";
+import mathmlRenderer from "./renderers/mathml-renderer";
 
 declare global {
   interface Window {
@@ -14,32 +15,26 @@ declare global {
   }
 }
 
-// This should be the only code executed outside of a function
-// and the only code containing browser globals (e.g. window)
-// TODO try to set up the linter to check these two constraints
-main(window);
-
 /**
  * Initial function called when loading the script.
- * @param {Window} w - The window instance of the browser.
  */
-async function main(w: Window): Promise<void> {
+async function main(): Promise<void> {
   const properties: Properties = await Properties.getInstance();
 
   // Expose the globals to the browser
-  if (!w.viewer) {
-    w.viewer = {
+  if (!window.viewer) {
+    window.viewer = {
       properties,
       isLoaded: false,
       version: packageInformation.version,
     };
   } else {
-    w.viewer.properties = properties;
-    w.viewer.isLoaded = false;
-    w.viewer.version = packageInformation.version;
+    window.viewer.properties = properties;
+    window.viewer.isLoaded = false;
+    window.viewer.version = packageInformation.version;
   }
 
-  const document = w.document;
+  const document = window.document;
 
   /**
    * Parse the DOM looking for LaTeX and <math> elements.
@@ -55,49 +50,38 @@ async function main(w: Window): Promise<void> {
     }
   };
 
-  // Initial function to call once document is loaded
-  // Renders formulas and sets observer
-  const start = async () => {
-    // Check if the viewer is alredy loaded
-    if (w.viewer.isLoaded) return;
-
-    w.viewer.isLoaded = true;
-
-    // First render
-    properties.render();
-
-    // Callback called every time there is a mutation in the watched DOM element
-    // Feature temporarily disabled due to KB-37834
-    // new MutationObserver(async (mutationList, observer) => {
-    //   for (const mutation of mutationList) {
-    //     for (const node of mutation.addedNodes) {
-    //       if (node instanceof HTMLElement) {
-    //         await properties.render();
-    //       }
-    //     }
-    //   }
-    // })
-    // // We need to watch over the whole document, in case the Properties.element is inserted
-    // // e.g. we set Properties.element = '#renderArea' and then we append <div id="renderArea">$$2+2=4$$</div> to the document
-    // .observe(document, {
-    //   attributes: true, // In case an attribute is changed in a <math> node, for instance
-    //   childList: true, // In case a new <math> or $$latex$$ node is added, for instance
-    //   subtree: true, // In case a <math> node is added as a descendant of the observed element, for instance
-    // });
-  };
-
-  // https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event#checking_whether_loading_is_already_complete
-  if (document.readyState === "loading") {
-    // Loading hasn't finished yet
-    document.addEventListener("DOMContentLoaded", start);
-  } else {
-    // `DOMContentLoaded` has already fired
-    start();
-  }
-
   // Expose the old Viewer API as a global
-  bypassEncapsulation(properties, w);
+  bypassEncapsulation(properties, window);
 
   // Dispatch an event notifying that the viewer has been loaded
   document.dispatchEvent(new Event("viewerLoaded"));
+
+  // =====================================================================================================================
+  // OBSERVERS IMPLEMENTATION
+  // =====================================================================================================================
+
+  const { render } = mathmlRenderer(properties);
+
+  // TODO
+  const renderMath = (entries: IntersectionObserverEntry[]) => {
+    entries.forEach((entry) => {
+      render(entry.target as MathMLElement);
+
+      mathObserver.unobserve(entry.target);
+    });
+  };
+
+  // TODO: add intersection observer so only the math expressions within
+  // visible content are rendered.
+  const mathObserver = new IntersectionObserver(renderMath, {
+    rootMargin: "250px",
+  });
+
+  const mathmls = document.querySelectorAll("math");
+
+  mathmls.forEach((m) => mathObserver.observe(m));
 }
+
+// This should be the only code executed outside of a function
+// and the only code containing browser globals (e.g. window)
+main();
