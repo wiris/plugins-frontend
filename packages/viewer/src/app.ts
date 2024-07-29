@@ -61,7 +61,7 @@ async function main(): Promise<void> {
   // OBSERVERS IMPLEMENTATION
   // =====================================================================================================================
 
-  const { render } = mathmlRenderer(properties);
+  const { render, findSafeMathMLTextNodes } = mathmlRenderer(properties);
 
   const { findNodesContainingLatex } = latex(properties);
 
@@ -80,10 +80,15 @@ async function main(): Promise<void> {
   const mathObserver = new IntersectionObserver(renderMath, {
     rootMargin: "250px",
   });
+  const allelements = document.querySelectorAll("*");
+
 
   const mathmls = document.querySelectorAll("math");
+  const safeMmls = findSafeMathMLTextNodes(window.document.documentElement);
 
   mathmls.forEach((m) => mathObserver.observe(m));
+  safeMmls.forEach((m) => mathObserver.observe(m));
+
 
   const nodesContainingLatex = findNodesContainingLatex();
 
