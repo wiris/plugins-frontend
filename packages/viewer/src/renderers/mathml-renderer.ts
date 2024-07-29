@@ -102,9 +102,27 @@ const mathmlRenderer = (viewerProperties: Properties) => {
     return image;
   };
 
+  const findSafeMathMLTextNodes = (root: HTMLElement): MathMLElement[] => {
+    const nodeIterator: NodeIterator = document.createNodeIterator(root, NodeFilter.SHOW_TEXT, (node) =>
+        /«math(.*?)«\/math»/g.test(node.nodeValue || "") ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT,
+      );
+      const safeNodes: MathMLElement[] = [];
+
+      let currentNode: Node | null;
+      while ((currentNode = nodeIterator.nextNode())) {
+        if(currentNode instanceof MathMLElement) {
+          safeNodes.push(currentNode);
+        }
+      }
+
+      return safeNodes;
+  }
+
   return {
     render,
+    findSafeMathMLTextNodes
   };
+
 };
 
 export default mathmlRenderer;
