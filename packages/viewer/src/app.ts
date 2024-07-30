@@ -60,14 +60,19 @@ async function main(): Promise<void> {
   // OBSERVERS IMPLEMENTATION
   // =====================================================================================================================
 
-  const { render, findSafeMathMLTextNodes } = mathmlRenderer(properties);
+  const {render, renderHtmlElement, findSafeMathMLTextNodes ,replaceTextNodesWithLabels} = mathmlRenderer(properties);
 
   // TODO
   const renderMath = (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
     entries.forEach((entry) => {
       if (entry.intersectionRatio > 0) {
-        render(entry.target as MathMLElement);
-        observer.unobserve(entry.target);
+        if(entry.target instanceof MathMLElement) {
+          render(entry.target);
+          observer.unobserve(entry.target);
+        } else if(entry.target instanceof HTMLElement) {
+          renderHtmlElement(entry.target);
+          observer.unobserve(entry.target);
+        }
       }
     });
   };
@@ -77,14 +82,23 @@ async function main(): Promise<void> {
   const mathObserver = new IntersectionObserver(renderMath, {
     rootMargin: "250px",
   });
-  const allelements = document.querySelectorAll("*");
-
 
   const mathmls = document.querySelectorAll("math");
   const safeMmls = findSafeMathMLTextNodes(window.document.documentElement);
+  // console.log(JSON.stringify(safeMmls));
+  // const replacedSafeMmls = replaceTextNodesWithLabels(safeMmls);
 
-  mathmls.forEach((m) => mathObserver.observe(m));
-  safeMmls.forEach((m) => mathObserver.observe(m));
+  // mathmls.forEach((m) => mathObserver.observe(m));
+
+  // replacedSafeMmls.forEach((m) => {
+  //   // console.log(m);
+  //   mathObserver.observe(m)
+  //   // console.log("Try to add to observe list");
+  //   // if (m instanceof Element) {
+  //   //   console.log("Added to observe list");
+  //   //   mathObserver.observe(m);
+  //   // }
+  // });
 
 }
 

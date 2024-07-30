@@ -1,5 +1,6 @@
 import { Properties } from "../properties";
 import { createImage, mathml2accessible, showImage } from "../services";
+import MathML from "@wiris/mathtype-html-integration-devkit/src/mathml";
 
 /**
  * Data obtained when rendering image. Data needed to set the formula image parameters.
@@ -29,6 +30,46 @@ const mathmlRenderer = (viewerProperties: Properties) => {
 
     const mathml = mathmlElement.outerHTML;
 
+    try {
+      let image: ImageData;
+
+      // Transform mml to img.
+      if (properties.wirispluginperformance === "true") {
+        image = await showImage(
+          mathml,
+          properties.lang,
+          properties.editorServicesRoot,
+          properties.editorServicesExtension,
+        );
+      } else {
+        image = await createImage(
+          mathml,
+          properties.lang,
+          properties.editorServicesRoot,
+          properties.editorServicesExtension,
+        );
+      }
+
+      // Set img properties.
+      const imageElement: HTMLImageElement = await buildImageElement(image, mathml);
+      // Replace the MathML for the generated formula image.
+      mathmlElement.parentNode?.replaceChild(imageElement, mathmlElement);
+    } catch {
+      Promise.reject(new Error(`Cannot render ${mathmlElement.outerHTML}: invalid MathML format.`));
+    }
+  };
+
+    const renderHtmlElement = async (mathmlElement: HTMLElement): Promise<void> => {
+    if (properties.viewer !== "image" && properties.viewer !== "mathml") {
+      return;
+    }
+
+    decodeSafeMathML(mathmlElement);
+
+    const mml = mathmlElement.getElementsByTagName("math")[0];
+
+    const mathml = mml.outerHTML;
+    console.log(mathml);
     try {
       let image: ImageData;
 
@@ -101,25 +142,65 @@ const mathmlRenderer = (viewerProperties: Properties) => {
     return image;
   };
 
-  const findSafeMathMLTextNodes = (root: HTMLElement): MathMLElement[] => {
+  const findSafeMathMLTextNodes = (root: HTMLElement): Node[] => {
     const nodeIterator: NodeIterator = document.createNodeIterator(root, NodeFilter.SHOW_TEXT, (node) =>
-        /«math(.*?)«\/math»/g.test(node.nodeValue || "") ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT,
-      );
-      const safeNodes: MathMLElement[] = [];
+      /«math(.*?)«\/math»/g.test(node.nodeValue || "") ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT,
+    );
+    const safeNodes: Node[] = [];
 
-      let currentNode: Node | null;
-      while ((currentNode = nodeIterator.nextNode())) {
-        if(currentNode instanceof MathMLElement) {
-          safeNodes.push(currentNode);
+    let currentNode: Node | null;
+    while ((currentNode = nodeIterator.nextNode())) {
+      console.log(currentNode);
+      safeNodes.push(currentNode);
+    }
+
+    return safeNodes;
+  }
+
+  const replaceTextNodesWithLabels = (nodes: Node[]) => {
+    const replacedLabels: HTMLElement[] = [];
+    nodes.forEach(node => {
+        if (node.nodeType === Node.TEXT_NODE) {
+            const parent = node.parentNode;
+            if (parent) {
+                const label = document.createElement('label');
+                label.textContent = node.textContent ?? '';
+
+                // Replace the text node with the new <label> element
+                parent.replaceChild(label, node);
+
+                replacedLabels.push(label);
+            }
+        } else if (node instanceof HTMLElement) {
+          replacedLabels.push(node);
         }
-      }
+    });
 
-      return safeNodes;
+    return replacedLabels;
+  };
+
+  /**
+ * Parse the DOM looking for «math» formulas and replace them with the corresponding rendered images within the given element.
+ * @param {HTMLElement} root - Any DOM element that can contain MathML.
+ */
+  const decodeSafeMathML = (root: HTMLElement) => {
+    const safeNodes = findSafeMathMLTextNodes(root);
+
+    for (const safeNode of safeNodes) {
+      const mathml = MathML.safeXmlDecode(safeNode.textContent ?? "");
+      // Insert mathml node.
+      const fragment = document.createRange().createContextualFragment(mathml);
+
+      safeNode.parentNode?.insertBefore(fragment, safeNode);
+      safeNode.parentNode?.removeChild(safeNode);
+    }
   }
 
   return {
     render,
-    findSafeMathMLTextNodes
+    renderHtmlElement,
+    findSafeMathMLTextNodes,
+    replaceTextNodesWithLabels
   };
 
 };
