@@ -61,7 +61,7 @@ async function main(): Promise<void> {
   // OBSERVERS IMPLEMENTATION
   // =====================================================================================================================
 
-  const { render, findSafeMathMLTextNodes } = mathmlRenderer(properties);
+  const { render, findSafeMathMLs, convertSafeMathML } = mathmlRenderer(properties);
 
   const { findNodesContainingLatex } = latex(properties);
 
@@ -75,24 +75,17 @@ async function main(): Promise<void> {
     });
   };
 
-  // TODO: add intersection observer so only the math expressions within
-  // visible content are rendered.
   const mathObserver = new IntersectionObserver(renderMath, {
     rootMargin: "250px",
   });
-  const allelements = document.querySelectorAll("*");
 
+  const mathMLElements = document.querySelectorAll("math");
 
-  const mathmls = document.querySelectorAll("math");
-  const safeMmls = findSafeMathMLTextNodes(window.document.documentElement);
+  const safeMathMLs = findSafeMathMLs(window.document.documentElement);
 
-  mathmls.forEach((m) => mathObserver.observe(m));
-  safeMmls.forEach((m) => mathObserver.observe(m));
+  const convertedSafeMathMLs: MathMLElement[] = convertSafeMathML(safeMathMLs);
 
-
-  const nodesContainingLatex = findNodesContainingLatex();
-
-  nodesContainingLatex.forEach((n) => console.log(n.textContent));
+  [...mathMLElements, ...convertedSafeMathMLs].forEach((m) => mathObserver.observe(m));
 }
 
 // This should be the only code executed outside of a function

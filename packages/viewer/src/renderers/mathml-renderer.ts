@@ -1,5 +1,6 @@
 import { Properties } from "../properties";
 import { createImage, mathml2accessible, showImage } from "../services";
+import MathML from "@wiris/mathtype-html-integration-devkit/src/mathml";
 
 /**
  * Data obtained when rendering image. Data needed to set the formula image parameters.
@@ -101,27 +102,57 @@ const mathmlRenderer = (viewerProperties: Properties) => {
     return image;
   };
 
-  const findSafeMathMLTextNodes = (root: HTMLElement): MathMLElement[] => {
+  const findSafeMathMLs = (root: HTMLElement): Node[] => {
     const nodeIterator: NodeIterator = document.createNodeIterator(root, NodeFilter.SHOW_TEXT, (node) =>
-        /«math(.*?)«\/math»/g.test(node.nodeValue || "") ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT,
-      );
-      const safeNodes: MathMLElement[] = [];
+      /«math(.*?)«\/math»/.test(node.nodeValue || "") ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT,
+    );
+    const safeNodes: Node[] = [];
 
-      let currentNode: Node | null;
-      while ((currentNode = nodeIterator.nextNode())) {
-        if(currentNode instanceof MathMLElement) {
-          safeNodes.push(currentNode);
+    let currentNode: Node | null;
+    while ((currentNode = nodeIterator.nextNode())) {
+      console.log(currentNode);
+      safeNodes.push(currentNode);
+    }
+
+    return safeNodes;
+  };
+
+  const parser = new DOMParser();
+
+  const convertSafeMathML = (nodes: Node[]) => {
+    const replacedMathMLs: MathMLElement[] = [];
+
+    nodes.forEach((node) => {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const parent = node.parentNode;
+
+        if (!parent) {
+          return; // This should never happen
         }
-      }
 
-      return safeNodes;
-  }
+        const tempDoc = parser.parseFromString(MathML.safeXmlDecode(node.textContent), "text/html");
+
+        const mathMLElement: MathMLElement | null = tempDoc.querySelector("math");
+
+        if (!mathMLElement) {
+          return;
+        }
+
+        parent.replaceChild(mathMLElement, node);
+
+        replacedMathMLs.push(mathMLElement);
+      }
+    });
+
+    return replacedMathMLs;
+  };
 
   return {
     render,
-    findSafeMathMLTextNodes
+    // renderHtmlElement,
+    findSafeMathMLs,
+    convertSafeMathML,
   };
-
 };
 
 export default mathmlRenderer;
