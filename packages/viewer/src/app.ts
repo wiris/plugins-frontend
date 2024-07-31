@@ -62,6 +62,8 @@ async function main(): Promise<void> {
 
   const { render, findSafeMathMLs, convertSafeMathML } = mathmlRenderer(properties);
 
+  const { findNodesContainingLatex, convertLatexToMml} = latex(properties);
+
   // TODO
   const renderMath = (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
     entries.forEach((entry) => {
@@ -76,13 +78,19 @@ async function main(): Promise<void> {
     rootMargin: "250px",
   });
 
+  const nodesContainingLatex = findNodesContainingLatex();
+
+  nodesContainingLatex.forEach((n) => console.log(n));
+
+  const convertedLatex = convertLatexToMml(nodesContainingLatex);
+
   const mathMLElements = document.querySelectorAll("math");
 
   const safeMathMLs = findSafeMathMLs(window.document.documentElement);
 
   const convertedSafeMathMLs: MathMLElement[] = convertSafeMathML(safeMathMLs);
 
-  [...mathMLElements, ...convertedSafeMathMLs].forEach((m) => mathObserver.observe(m));
+  [...mathMLElements, ...convertedSafeMathMLs, ...(await convertedLatex)].forEach((m) => mathObserver.observe(m));
 }
 
 // This should be the only code executed outside of a function

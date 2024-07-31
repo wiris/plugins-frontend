@@ -110,7 +110,6 @@ const mathmlRenderer = (viewerProperties: Properties) => {
 
     let currentNode: Node | null;
     while ((currentNode = nodeIterator.nextNode())) {
-      console.log(currentNode);
       safeNodes.push(currentNode);
     }
 
@@ -149,7 +148,6 @@ const mathmlRenderer = (viewerProperties: Properties) => {
 
   return {
     render,
-    // renderHtmlElement,
     findSafeMathMLs,
     convertSafeMathML,
   };
