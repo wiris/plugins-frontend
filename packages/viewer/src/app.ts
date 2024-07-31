@@ -4,6 +4,7 @@ import { renderMathML } from "./mathml";
 import { bypassEncapsulation } from "./retro";
 import packageInformation from "../../../node_modules/@wiris/mathtype-viewer/package.json";
 import mathmlRenderer from "./renderers/mathml-renderer";
+import latex from "./utils/latex";
 
 declare global {
   interface Window {
@@ -79,8 +80,6 @@ async function main(): Promise<void> {
   });
 
   const nodesContainingLatex = findNodesContainingLatex();
-
-  nodesContainingLatex.forEach((n) => console.log(n));
 
   const convertedLatex = convertLatexToMml(nodesContainingLatex);
 
