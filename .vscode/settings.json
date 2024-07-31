@@ -13,7 +13,7 @@
   "files.autoSave": "afterDelay", // Autosave files after a delay
   "editor.formatOnSave": true, // Format code when saving ( <Ctrl> + S)
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true // Fix all ESLint errors on save
+    "source.fixAll.eslint": "explicit"
   },
 
   //! File settings

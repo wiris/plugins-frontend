@@ -60,46 +60,29 @@ async function main(): Promise<void> {
   // OBSERVERS IMPLEMENTATION
   // =====================================================================================================================
 
-  const {render, renderHtmlElement, findSafeMathMLTextNodes ,replaceTextNodesWithLabels} = mathmlRenderer(properties);
+  const { render, findSafeMathMLs, convertSafeMathML } = mathmlRenderer(properties);
 
   // TODO
   const renderMath = (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
     entries.forEach((entry) => {
       if (entry.intersectionRatio > 0) {
-        if(entry.target instanceof MathMLElement) {
-          render(entry.target);
-          observer.unobserve(entry.target);
-        } else if(entry.target instanceof HTMLElement) {
-          renderHtmlElement(entry.target);
-          observer.unobserve(entry.target);
-        }
+        render(entry.target as MathMLElement);
+        observer.unobserve(entry.target);
       }
     });
   };
 
-  // TODO: add intersection observer so only the math expressions within
-  // visible content are rendered.
   const mathObserver = new IntersectionObserver(renderMath, {
     rootMargin: "250px",
   });
 
-  const mathmls = document.querySelectorAll("math");
-  const safeMmls = findSafeMathMLTextNodes(window.document.documentElement);
-  // console.log(JSON.stringify(safeMmls));
-  // const replacedSafeMmls = replaceTextNodesWithLabels(safeMmls);
+  const mathMLElements = document.querySelectorAll("math");
 
-  // mathmls.forEach((m) => mathObserver.observe(m));
+  const safeMathMLs = findSafeMathMLs(window.document.documentElement);
 
-  // replacedSafeMmls.forEach((m) => {
-  //   // console.log(m);
-  //   mathObserver.observe(m)
-  //   // console.log("Try to add to observe list");
-  //   // if (m instanceof Element) {
-  //   //   console.log("Added to observe list");
-  //   //   mathObserver.observe(m);
-  //   // }
-  // });
+  const convertedSafeMathMLs: MathMLElement[] = convertSafeMathML(safeMathMLs);
 
+  [...mathMLElements, ...convertedSafeMathMLs].forEach((m) => mathObserver.observe(m));
 }
 
 // This should be the only code executed outside of a function
