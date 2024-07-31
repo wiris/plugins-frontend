@@ -79,6 +79,10 @@ async function main(): Promise<void> {
     rootMargin: "250px",
   });
 
+  const nodesContainingLatex = findNodesContainingLatex();
+  
+  nodesContainingLatex.forEach((n) => console.log(n.textContent));
+
   const mathMLElements = document.querySelectorAll("math");
 
   const safeMathMLs = findSafeMathMLs(window.document.documentElement);
