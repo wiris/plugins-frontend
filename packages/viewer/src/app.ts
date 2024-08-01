@@ -63,7 +63,7 @@ async function main(): Promise<void> {
 
   const { render, findSafeMathMLs, convertSafeMathML } = mathmlRenderer(properties);
 
-  const { findNodesContainingLatex, convertLatexToMml} = latex(properties);
+  const { convertLatexIntoMathML} = latex(properties);
 
   // TODO
   const renderMath = (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
@@ -75,21 +75,33 @@ async function main(): Promise<void> {
     });
   };
 
+  const renderLateX = (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
+    entries.forEach(async (entry) => {
+      if (entry.intersectionRatio > 0) {
+        const nodesContainingLatex = await convertLatexIntoMathML(entry.target as HTMLElement);
+        nodesContainingLatex.forEach((m) => mathObserver.observe(m));
+        observer.unobserve(entry.target);
+      }
+    });
+  };
+
   const mathObserver = new IntersectionObserver(renderMath, {
     rootMargin: "250px",
   });
 
-  const nodesContainingLatex = findNodesContainingLatex();
-
-  const convertedLatex = convertLatexToMml(nodesContainingLatex);
+  const latexbserver = new IntersectionObserver(renderLateX, {
+    rootMargin: "250px",
+  });
 
   const mathMLElements = document.querySelectorAll("math");
+  const allElements = document.querySelectorAll("*");
 
   const safeMathMLs = findSafeMathMLs(window.document.documentElement);
 
   const convertedSafeMathMLs: MathMLElement[] = convertSafeMathML(safeMathMLs);
 
-  [...mathMLElements, ...convertedSafeMathMLs, ...(await convertedLatex)].forEach((m) => mathObserver.observe(m));
+  [...mathMLElements, ...convertedSafeMathMLs].forEach((m) => mathObserver.observe(m));
+  [...allElements].forEach((m) => latexbserver.observe(m));
 }
 
 // This should be the only code executed outside of a function
