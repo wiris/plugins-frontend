@@ -6,6 +6,41 @@
     <script src="https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image"></script>
   </head>
   <body>
+    <header class="header">
+  <h1 class="header_title" id="header_title_name">&nbsp;</h1>
+  <div class="header_versions">
+    <ul class="header_versions_content">
+      <li class="header_versions_content-position" id="version_editor"></li>
+      <li class="header_versions_content-position" id="version_wiris">Mathtype:</li>
+      <li class="header_versions_content-position" id="git_branch"></li>
+      <li class="header_versions_content-position" id="git_commit"></li>
+    </ul>
+  </div>
+</header>
+<div id="editor">
+  <!-- Default content of the editor div is loaded through imports.js -->
+</div>
+<div id="editor2">
+  <!-- Default content of the editor div is loaded through imports.js -->
+</div>
+<div id="editor3">
+  <!-- Default content of the editor div is loaded through imports.js -->
+</div>
+<div class="revision-history" id="editor-revision-history">
+<div class="revision-history__wrapper">
+  <div class="revision-history__editor" id="editor-revision-history-editor"></div>
+  <div class="revision-history__sidebar" id="editor-revision-history-sidebar"></div>
+</div>
+</div>
+<div class="actions">
+  <a class="btn btn_update-distances btn_update-display" id="btn_update" href="#" data-testid="demo-update-button"
+    >UPDATE</a
+  >
+</div>
+<div class="transform" id="transform_content"></div>
+
     <script src="./dist/demo.js"></script>
+
   </body>
 </html>
+
