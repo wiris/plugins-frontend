@@ -91,38 +91,7 @@ ClassicEditor.create(document.querySelector("#editor2"), {
     console.error(error.stack); //eslint-disable-line
   });
 
-ClassicEditor.create(document.querySelector("#editor3"), {
-  plugins: [Essentials, Paragraph, Bold, Italic, MathType, Alignment, SourceEditing],
-  toolbar: [
-    "bold",
-    "italic",
-    "MathType",
-    "ChemType",
-    "alignment:left",
-    "alignment:center",
-    "alignment:right",
-    "sourceEditing",
-  ],
-  // language: 'de',
-  // mathTypeParameters: {
-  //   editorParameters: { language: 'es' }, // MathType config, including language
-  // },
-})
-  .then((editor) => {
-    window.editor = editor;
-    // Add listener on click button to launch updateContent function.
-    // document.getElementById('btn_update').addEventListener('click', (e) => {
-    //   e.preventDefault();
-    //   Generic.updateContent(editor.getData(), 'transform_content');
-    // });
 
-    // Get and set the editor and wiris versions in this order.
-    Generic.setEditorAndWirisVersion("5.0.0", packageInfo.version);
-    editor.editing.view.focus();
-  })
-  .catch((error) => {
-    console.error(error.stack); //eslint-disable-line
-  });s
 document.getElementById("btn_update").addEventListener("click", (e) => {
   e.preventDefault();
   Generic.updateContent(window.editor.getData(), "transform_content");
