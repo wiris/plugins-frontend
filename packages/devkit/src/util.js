@@ -432,7 +432,7 @@ export default class Util {
     let annotation = html.match(annotationRegex);
     // Sanitize html code without removing our supported MathML tags and attributes.
     html = DOMPurify.sanitize(html, {
-      ADD_TAGS: ["semantics", "annotation", "mstack", "msline", "msrow"],
+      ADD_TAGS: ["semantics", "annotation", "mstack", "msline", "msrow", "none"],
       ADD_ATTR: ["linebreak", "charalign", "stackalign"],
     });
     // Readd old annotation content.

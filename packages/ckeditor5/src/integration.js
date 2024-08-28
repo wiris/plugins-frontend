@@ -134,7 +134,10 @@ export default class CKEditor5Integration extends IntegrationModel {
   openNewFormulaEditor() {
     // Store the editor selection as it will be lost upon opening the modal
     this.core.editionProperties.selection = this.editorObject.editing.view.document.selection;
+
+    // Focus on the selected editor when multiple editor instances are present
     WirisPlugin.currentInstance = this;
+
     return super.openNewFormulaEditor();
   }
 

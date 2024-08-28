@@ -35,8 +35,8 @@
   "type": "module",
   "exports": {
     ".": "./src/plugin.js",
-    "./dist/*.css": "./dist/*.css",
     "./dist/*": "./dist/*",
+    "./browser/*": null,
     "./src/*": "./src/*",
     "./theme/*": "./theme/*",
     "./package.json": "./package.json"
@@ -50,10 +50,10 @@
     "@wiris/mathtype-html-integration-devkit": "1.17.3"
   },
   "devDependencies": {
-    "@ckeditor/ckeditor5-dev-build-tools": "^40.2.0",
-    "ckeditor5": ">=42.0.0"
+    "@ckeditor/ckeditor5-dev-build-tools": "^42.0.0",
+    "ckeditor5": ">=43.0.0"
   },
   "peerDependencies": {
-    "ckeditor5": ">=42.0.0"
+    "ckeditor5": ">=43.0.0"
   }
 }
