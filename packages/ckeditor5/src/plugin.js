@@ -87,7 +87,7 @@ export default class MathType extends Plugin {
     integrationProperties.version = packageInfo.version;
     integrationProperties.editorObject = editor;
     integrationProperties.serviceProviderProperties = {};
-    integrationProperties.serviceProviderProperties.URI = "https://www.wiris.net/demo/plugins/app";
+    integrationProperties.serviceProviderProperties.URI = "http://localhost:8080/pluginwiris_engine/app";
     integrationProperties.serviceProviderProperties.server = "java";
     integrationProperties.target = editor.sourceElement;
     integrationProperties.scriptName = "bundle.js";
