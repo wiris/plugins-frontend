@@ -117,17 +117,40 @@ export default class ModalDialog {
     attributes.id = this.getElementId(attributes.class);
     attributes.title = StringManager.get("close");
     attributes.style = {};
+    attributes.style.border = "1px solid red";
     this.closeDiv = Util.createElement("a", attributes);
     this.closeDiv.setAttribute("role", "button");
     this.closeDiv.setAttribute("tabindex", 3);
+    console.log(window.btoa(closeIcon));
+    // Encode the SVG to make it URL-friendly
+    const encodedSVG = encodeURIComponent(closeIcon).replace(/%20/g, " ").replace(/'/g, "%27").replace(/"/g, "%22");
+
+    // Create the data URL
+    const svgDataURL = `data:image/svg+xml,${encodedSVG}`;
+    this.closeDiv.style.backgroundImage = `url("${svgDataURL}")`;
     // Apply styles and events after the creation as createElement doesn't process them correctly
-    let generalStyle = `background-size: 10px; background-image: url(data:image/svg+xml;base64,${window.btoa(closeIcon)})`;
-    let hoverStyle = `background-size: 10px; background-image: url(data:image/svg+xml;base64,${window.btoa(closeHoverIcon)})`;
-    this.closeDiv.setAttribute("style", generalStyle);
-    this.closeDiv.setAttribute("onmouseover", `this.style = "${hoverStyle}";`);
-    this.closeDiv.setAttribute("onmouseout", `this.style = "${generalStyle}";`);
-    // To identifiy the element in automated testing
+    let generalStyle; // = `backgroundSize: 10px; backgroundImage: url(data:image/svg+xml;base64,${closeIcon})`;
+    let hoverStyle = `background-size: 10px; background-image: url(data:image/svg+xml;base64,${btoa(closeHoverIcon)})`;
+    // this.closeDiv.setAttribute("style", generalStyle);
+    // this.closeDiv.setAttribute(
+    //   "onmouseover",
+    //   `this.style.backgroundImage = "url(data:image/svg+xml;base64,${svgToBase64(closeHoverIcon)})";`,
+    // );
+    // this.closeDiv.setAttribute(
+    //   "onmouseout",
+    //   `this.style.backgroundImage = "url(data:image/svg+xml;base64,${svgToBase64(closeIcon)})";`,
+    // );
+
+    // To identify the element in automated testing
     this.closeDiv.setAttribute("data-testid", "mtcteditor-close-button");
+
+    function svgToBase64(svg) {
+      return window.btoa(
+        encodeURIComponent(svg).replace(/%([0-9A-F]{2})/g, function (match, p1) {
+          return String.fromCharCode("0x" + p1);
+        }),
+      );
+    }
 
     attributes = {};
     attributes.class = "wrs_modal_stack_button";
