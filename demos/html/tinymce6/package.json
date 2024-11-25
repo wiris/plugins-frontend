@@ -13,7 +13,7 @@
   "dependencies": {
     "@wiris/mathtype-html-integration-devkit": "*",
     "@wiris/mathtype-tinymce6": "*",
-    "tinymce": "^6.0.0"
+    "tinymce": "^7.0.0"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^12.0.2",
