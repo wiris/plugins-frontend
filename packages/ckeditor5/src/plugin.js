@@ -38,7 +38,7 @@ export default class MathType extends Plugin {
 
   init() {
     // Create the MathType API Integration object
-    this.integration = this._addIntegration();
+    const integration = this._addIntegration();
 
     // Add the MathType and ChemType commands to the editor
     this._addCommands();
