@@ -26,6 +26,7 @@ import chemIcon from "../theme/icons/ckeditor5-chem.svg";
 import packageInfo from "../package.json";
 
 export let currentInstance = null; // eslint-disable-line import/no-mutable-exports
+export const integration = null; // eslint-disable-line import/no-mutable-exports
 
 export default class MathType extends Plugin {
   static get requires() {
@@ -38,20 +39,19 @@ export default class MathType extends Plugin {
 
   init() {
     // Create the MathType API Integration object
-    const integration = this._addIntegration();
-    currentInstance = integration;
+    this.integration = this._addIntegration();
 
     // Add the MathType and ChemType commands to the editor
     this._addCommands();
 
     // Add the buttons for MathType and ChemType
-    this._addViews(integration);
+    this._addViews(this.integration);
 
     // Registers the <mathml> element in the schema
     this._addSchema();
 
     // Add the downcast and upcast converters
-    this._addConverters(integration);
+    this._addConverters(this.integration);
 
     // Expose the WirisPlugin variable to the window
     this._exposeWiris();
@@ -61,8 +61,7 @@ export default class MathType extends Plugin {
    * Inherited from Plugin class: Executed when CKEditor5 is destroyed
    */
   destroy() {
-    // eslint-disable-line class-methods-use-this
-    currentInstance.destroy();
+    this.integration.destroy();
   }
 
   /**
@@ -113,6 +112,16 @@ export default class MathType extends Plugin {
         },
         { priority: "highest" },
       );
+
+      this.listenTo(editor.editing.view.document, "change:isFocused", (_evt, _data, isFocused) => {
+        if (isFocused) {
+          currentInstance = integration;
+        }
+      });
+
+      if (editor.editing.view.document.isFocused) {
+        currentInstance = integration;
+      }
     }
 
     return integration;
@@ -393,7 +402,7 @@ export default class MathType extends Plugin {
       const formula = modelItem.getAttribute("formula");
       const htmlContent = modelItem.getAttribute("htmlContent");
 
-      if(!formula && !htmlContent){
+      if (!formula && !htmlContent) {
         return null;
       }
 
@@ -401,7 +410,7 @@ export default class MathType extends Plugin {
 
       if (htmlContent) {
         imgElement = htmlDataProcessor.toView(htmlContent).getChild(0);
-      } else if(formula) {
+      } else if (formula) {
         const mathString = formula.replaceAll('ref="<"', 'ref="&lt;"');
 
         const imgHtml = Parser.initParse(mathString, integration.getLanguage());
@@ -412,9 +421,9 @@ export default class MathType extends Plugin {
       }
 
       /* Although we use the HtmlDataProcessor to obtain the attributes,
-        *  we must create a new EmptyElement which is independent of the
-        *  DataProcessor being used by this editor instance
-        */
+       *  we must create a new EmptyElement which is independent of the
+       *  DataProcessor being used by this editor instance
+       */
       if (imgElement) {
         return viewWriter.createEmptyElement("img", imgElement.getAttributes(), {
           renderUnsafeAttributes: ["src"],
@@ -523,7 +532,7 @@ export default class MathType extends Plugin {
             // If we found a formula image, we should find MathML data, and then substitute the entire image.
             const regexp = /«math\b[^»]*»(.*?)«\/math»/g;
             const safexml = formula.match(regexp);
-            if(safexml !== null) {
+            if (safexml !== null) {
               let decodeXML = MathML.safeXmlDecode(safexml[0]);
               modifiedData = modifiedData.replace(formula, decodeXML);
             }
