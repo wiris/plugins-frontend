@@ -43,7 +43,7 @@ ClassicEditor.create(document.querySelector("#editor"), {
   // },
 })
   .then((editor) => {
-    window.editor = editor;
+    window["editor"] = editor;
     // Add listener on click button to launch updateContent function.
     // document.getElementById('btn_update').addEventListener('click', (e) => {
     //   e.preventDefault();
@@ -76,7 +76,7 @@ ClassicEditor.create(document.querySelector("#editor2"), {
   // },
 })
   .then((editor) => {
-    window.editor = editor;
+    window["editor2"] = editor;
     // Add listener on click button to launch updateContent function.
     // document.getElementById('btn_update').addEventListener('click', (e) => {
     //   e.preventDefault();
