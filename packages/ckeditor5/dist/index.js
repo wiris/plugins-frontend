@@ -359,7 +359,7 @@ var mathIcon = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!-- Generator: Adob
 var chemIcon = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!-- Generator: Adobe Illustrator 22.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\n<svg version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\"\n\t viewBox=\"0 0 40.3 49.5\" style=\"enable-background:new 0 0 40.3 49.5;\" xml:space=\"preserve\">\n<style type=\"text/css\">\n\t.st0{fill:#A4CF61;}\n</style>\n<path class=\"st0\" d=\"M39.2,12.1c0-1.9-1.1-3.6-2.7-4.4L24.5,0.9l0,0c-0.7-0.4-1.5-0.6-2.4-0.6c-0.9,0-1.7,0.2-2.4,0.6l0,0L2.3,10.8\n\tl0,0C0.9,11.7,0,13.2,0,14.9h0v19.6h0c0,1.7,0.9,3.3,2.3,4.1l0,0l17.4,9.9l0,0c0.7,0.4,1.5,0.6,2.4,0.6c0.9,0,1.7-0.2,2.4-0.6l0,0\n\tl12.2-6.9h0c1.5-0.8,2.6-2.5,2.6-4.3c0-2.7-2.2-4.9-4.9-4.9c-0.9,0-1.8,0.3-2.5,0.7l0,0l-9.7,5.6l-12.3-7V17.8l12.3-7l9.9,5.7l0,0\n\tc0.7,0.4,1.5,0.6,2.4,0.6C37,17,39.2,14.8,39.2,12.1\"/>\n</svg>\n";
 
 var name = "@wiris/mathtype-ckeditor5";
-var version = "8.11.0";
+var version = "8.11.1";
 var description = "MathType Web for CKEditor5 editor";
 var keywords = [
 	"chem",
@@ -437,6 +437,7 @@ var packageInfo = {
 
 // CKEditor imports
 let currentInstance = null; // eslint-disable-line import/no-mutable-exports
+let currentIntegration = null;
 class MathType extends Plugin {
     static get requires() {
         return [
@@ -448,24 +449,22 @@ class MathType extends Plugin {
     }
     init() {
         // Create the MathType API Integration object
-        const integration = this._addIntegration();
-        currentInstance = integration;
+        currentIntegration = this._addIntegration();
         // Add the MathType and ChemType commands to the editor
         this._addCommands();
         // Add the buttons for MathType and ChemType
-        this._addViews(integration);
+        this._addViews(currentIntegration);
         // Registers the <mathml> element in the schema
         this._addSchema();
         // Add the downcast and upcast converters
-        this._addConverters(integration);
+        this._addConverters(currentIntegration);
         // Expose the WirisPlugin variable to the window
         this._exposeWiris();
     }
     /**
    * Inherited from Plugin class: Executed when CKEditor5 is destroyed
    */ destroy() {
-        // eslint-disable-line class-methods-use-this
-        currentInstance.destroy();
+        currentIntegration.destroy();
     }
     /**
    * Create the MathType API Integration object
@@ -506,6 +505,14 @@ class MathType extends Plugin {
             }, {
                 priority: "highest"
             });
+            this.listenTo(editor.editing.view.document, "change:isFocused", (_evt, _data, isFocused)=>{
+                if (isFocused) {
+                    currentInstance = integration;
+                }
+            });
+            if (editor.editing.view.document.isFocused) {
+                currentInstance = integration;
+            }
         }
         return integration;
     }
@@ -748,9 +755,9 @@ class MathType extends Plugin {
                 viewWriter.setAttribute("htmlContent", imgHtml, modelItem);
             }
             /* Although we use the HtmlDataProcessor to obtain the attributes,
-        *  we must create a new EmptyElement which is independent of the
-        *  DataProcessor being used by this editor instance
-        */ if (imgElement) {
+       *  we must create a new EmptyElement which is independent of the
+       *  DataProcessor being used by this editor instance
+       */ if (imgElement) {
                 return viewWriter.createEmptyElement("img", imgElement.getAttributes(), {
                     renderUnsafeAttributes: [
                         "src"
