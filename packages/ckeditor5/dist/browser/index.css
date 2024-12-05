@@ -158,26 +158,20 @@
   box-shadow: rgba(0, 0, 0, 0.5) 0 2px 8px;
 }
 
+.wrs_modal_dialogContainer.wrs_modal_ios,
 .wrs_modal_dialogContainer.wrs_modal_android {
-  margin: auto;
+  margin: 0px;
   position: fixed;
-  width: 99%;
-  height: 99%;
+  height: auto;
   overflow: hidden;
-  transform: translate(50%, -50%);
-  top: 50%;
-  right: 50% !important;
-}
-
-.wrs_modal_dialogContainer.wrs_modal_ios {
-  margin: auto;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  transform: translate(50%, -50%);
-  top: 50%;
-  right: 50% !important;
+  top: calc(env(safe-area-inset-top));
+  right: calc(env(safe-area-inset-right));
+  left: calc(env(safe-area-inset-left));
+  bottom: calc(env(safe-area-inset-bottom));
+  transform: none;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Class that exists but hasn't got css properties defined
@@ -191,32 +185,20 @@
     flex-grow: 1;
 } */
 
-.wrs_content_container.wrs_modal_android {
-  width: 100%;
-  height: 0%;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.wrs_content_container.wrs_modal_android > div:first-child {
-  flex-grow: 1;
-}
-
-.wrs_content_container.wrs_modal_ios > div:first-child {
-  flex-grow: 1;
-}
-
 .wrs_content_container.wrs_modal_desktop > div:first-child {
   flex-grow: 1;
 }
 
-.wrs_modal_wrapper.wrs_modal_android {
-  margin: auto;
+.wrs_modal_wrapper.wrs_modal_android,
+.wrs_modal_wrapper.wrs_modal_ios {
+  margin: 0.5rem !important;
   display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
+}
+
+.wrs_content_container.wrs_modal_ios,
+.wrs_content_container.wrs_modal_android {
+  flex-grow: 0.98;
+  display: flex;
 }
 
 .wrs_content_container.wrs_modal_desktop {
@@ -224,60 +206,6 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-}
-
-.wrs_content_container.wrs_modal_ios {
-  width: 100%;
-  height: 0%;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.wrs_modal_wrapper.wrs_modal_ios {
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
-}
-
-.wrs_virtual_keyboard {
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 50%;
-  transform: translate(-50%, 0%);
-}
-
-@media all and (orientation: portrait) {
-  .wrs_modal_dialogContainer.wrs_modal_mobile {
-    width: 100vmin;
-    height: 100vmin;
-    margin: auto;
-    border-width: 0;
-  }
-
-  .wrs_modal_wrapper.wrs_modal_mobile {
-    width: 100vmin;
-    height: 100vmin;
-    margin: auto;
-  }
-}
-
-@media all and (orientation: landscape) {
-  .wrs_modal_dialogContainer.wrs_modal_mobile {
-    width: 100vmin;
-    height: 100vmin;
-    margin: auto;
-    border-width: 0;
-  }
-
-  .wrs_modal_wrapper.wrs_modal_mobile {
-    width: 100vmin;
-    height: 100vmin;
-    margin: auto;
-  }
 }
 
 .wrs_modal_dialogContainer.wrs_modal_badStock {
@@ -328,8 +256,6 @@
 
 .wrs_modal_controls {
   height: 42px;
-  margin: 3px 0;
-  overflow: hidden;
   line-height: normal;
 }
 
@@ -401,10 +327,6 @@
   float: left;
 }
 
-.wrs_modal_buttons_container.wrs_modalAndroid {
-  padding-left: 6px;
-}
-
 .wrs_modal_buttons_container.wrs_modalDesktop {
   padding-left: 0;
 }
@@ -422,12 +344,6 @@
 
 .wrs_modal_wrapper.wrs_modal_desktop.wrs_minimized {
   display: none;
-}
-
-@media only screen and (max-device-width: 480px) and (orientation: portrait) {
-  #wrs_modal_wrapper {
-    width: 140%;
-  }
 }
 
 .wrs_popupmessage_overlay_envolture {
@@ -561,17 +477,26 @@
 
 /* The Offline Modal (background) */
 .wrs_modal_offline {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 2; /* Sit on top */
-  padding-top: 150px; /* Location of the box */
+  display: none;
+  /* Hidden by default */
+  position: fixed;
+  /* Stay in place */
+  z-index: 2;
+  /* Sit on top */
+  padding-top: 150px;
+  /* Location of the box */
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0); /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  width: 100%;
+  /* Full width */
+  height: 100%;
+  /* Full height */
+  overflow: auto;
+  /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0);
+  /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Black w/ opacity */
   margin: auto;
 }
 

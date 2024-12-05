@@ -26,6 +26,7 @@ window.editor = null;
 
 // Create the CKEditor 5.
 ClassicEditor.create(document.querySelector("#editor"), {
+  licenseKey: "GPL",
   plugins: [Essentials, Paragraph, Bold, Italic, MathType, Alignment, SourceEditing],
   toolbar: [
     "bold",
