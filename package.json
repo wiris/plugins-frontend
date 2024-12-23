@@ -21,7 +21,7 @@
     "@nx/cypress": "18.2.2",
     "@nx/eslint-plugin": "18.2.2",
     "@nx/linter": "18.2.2",
-    "@nx/web": "18.2.2",
+    "@nx/web": "20.3.0",
     "@nx/webpack": "18.2.2",
     "@nx/workspace": "18.2.2",
     "@types/node": "20.12.4",
