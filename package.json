@@ -19,7 +19,7 @@
     "@nrwl/js": "18.2.2",
     "@nrwl/tao": "18.2.2",
     "@nx/cypress": "18.2.2",
-    "@nx/eslint-plugin": "18.2.2",
+    "@nx/eslint-plugin": "20.3.0",
     "@nx/linter": "18.2.2",
     "@nx/web": "18.2.2",
     "@nx/webpack": "18.2.2",
