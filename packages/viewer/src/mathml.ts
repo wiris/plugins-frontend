@@ -35,10 +35,16 @@ function findSafeMathMLTextNodes(root: HTMLElement): Node[] {
  * Parse the DOM looking for «math» formulas and replace them with the corresponding rendered images within the given element.
  * @param {HTMLElement} root - Any DOM element that can contain MathML.
  */
-function decodeSafeMathML(root: HTMLElement) {
+function decodeSafeMathML(root: any, ignored_mathml_containers: string | null) {
   const safeNodes = findSafeMathMLTextNodes(root);
+  const blackListedNodes = root.querySelectorAll(ignored_mathml_containers) ?? [];
 
   for (const safeNode of safeNodes) {
+    if (blackListedNodes.length > 0 && isNodeBlacklisted(safeNode, blackListedNodes)) {
+      console.log("Node is blacklisted");
+      continue;
+    }
+
     const mathml = MathML.safeXmlDecode(safeNode.textContent ?? "");
     // Insert mathml node.
     const fragment = document.createRange().createContextualFragment(mathml);
@@ -46,6 +52,17 @@ function decodeSafeMathML(root: HTMLElement) {
     safeNode.parentNode?.insertBefore(fragment, safeNode);
     safeNode.parentNode?.removeChild(safeNode);
   }
+}
+
+/**
+ * Checks if a node or any of its ancestors are in the blacklist.
+ *
+ * @param node - The node to check.
+ * @param blackListedNodes - The list of blacklisted nodes.
+ * @returns True if the node or any of its ancestors are blacklisted, false otherwise.
+ */
+function isNodeBlacklisted(node: Node, blackListedNodes: NodeListOf<Element>): boolean {
+  return Array.from(blackListedNodes).some((blackListedNode) => blackListedNode.contains(node));
 }
 
 /**
@@ -58,7 +75,7 @@ export async function renderMathML(properties: Properties, root: HTMLElement): P
     return;
   }
 
-  decodeSafeMathML(root);
+  decodeSafeMathML(root, properties.ignored_containers);
 
   for (const mathElement of [...root.getElementsByTagName("math")]) {
     const mml = serializeHtmlToXml(mathElement.outerHTML);

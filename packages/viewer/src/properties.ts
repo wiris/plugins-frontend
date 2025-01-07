@@ -21,6 +21,7 @@ export interface Config {
   lang: string;
   viewer: Viewer;
   zoom: number;
+  ignored_containers: string | null;
 }
 
 /**
@@ -39,6 +40,7 @@ const defaultValues: Config = {
   lang: "en",
   viewer: "none",
   zoom: 1,
+  ignored_containers: null,
 };
 
 /**
@@ -142,6 +144,11 @@ export class Properties {
     const zoom = urlParams.get("zoom");
     if (zoom !== null && zoom !== undefined) {
       instance.config.zoom = +zoom;
+    }
+
+    const ignored_containers = urlParams.get("ignored_containers");
+    if (ignored_containers !== null && ignored_containers !== undefined) {
+      instance.config.ignored_containers = ignored_containers;
     }
   }
 
@@ -299,6 +306,15 @@ export class Properties {
 
   set wiriseditormathmlattribute(wiriseditormathmlattribute: string) {
     this.config.backendConfig.wiriseditormathmlattribute = wiriseditormathmlattribute;
+    this.render();
+  }
+
+  get ignored_containers(): string | null {
+    return this.config.ignored_containers ?? defaultValues.ignored_containers;
+  }
+
+  set ignored_containers(ignored_containers: string) {
+    this.config.ignored_containers = ignored_containers;
     this.render();
   }
 }

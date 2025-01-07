@@ -15,7 +15,7 @@ export async function renderLatex(properties: Properties, root: HTMLElement) {
   if (properties.viewer !== "image" && properties.viewer !== "latex") {
     return;
   }
-  const latexNodes = findLatexTextNodes(root);
+  const latexNodes = findLatexTextNodes(root, properties.ignored_containers);
 
   for (const latexNode of latexNodes) {
     await replaceLatexInTextNode(properties, latexNode);
@@ -36,53 +36,80 @@ async function replaceLatexInTextNode(properties: Properties, node: Node) {
     if (nextLatexPosition) {
       // Get left non LaTeX text.
       const leftText: string = textContent.substring(pos, nextLatexPosition.start);
-      const leftTextNode = document.createTextNode(leftText);
-      // Create a node with left text.
-      node.parentNode?.insertBefore(leftTextNode, node);
-      node.nodeValue = node.nodeValue?.substring(pos, nextLatexPosition.start) ?? "";
+      if (leftText) {
+        const leftTextNode = document.createTextNode(leftText);
+        // Create a node with left text.
+        node.parentNode?.insertBefore(leftTextNode, node);
+      }
 
       // Get LaTeX text.
       const latex = textContent.substring(nextLatexPosition.start + "$$".length, nextLatexPosition.end);
-      // Convert LaTeX to mathml.
+      // Convert LaTeX to MathML.
       const response = await latexToMathml(latex, properties.editorServicesRoot, properties.editorServicesExtension);
-      // Insert mathml node.
+      // Insert MathML node.
       const fragment = document.createRange().createContextualFragment(response.text);
-
       node.parentNode?.insertBefore(fragment, node);
-      node.nodeValue = node.nodeValue.substring(nextLatexPosition.start, nextLatexPosition.end);
 
+      // Update pos to search for next LaTeX instance.
       pos = nextLatexPosition.end + "$$".length;
     } else {
-      // No more LaTeX node found.
-      const text = textContent.substring(pos);
-      const textNode = document.createTextNode(text);
-      node.parentNode?.insertBefore(textNode, node);
-      node.nodeValue = "";
-      pos = textContent.length;
+      // If no more LaTeX found, append the rest of the text as a new text node and break the loop.
+      const remainingText = textContent.substring(pos);
+      if (remainingText) {
+        const remainingTextNode = document.createTextNode(remainingText);
+        node.parentNode?.insertBefore(remainingTextNode, node);
+      }
+      break; // Exit the loop as we've processed all text.
     }
   }
-
-  // Delete original text node.
+  // Remove the original node after processing.
   node.parentNode?.removeChild(node);
 }
 
 /**
- * Returns an array with all HTML LaTeX nodes.
- * @param {HTMLElement} root - Any DOM element that can contain LaTeX.
- * @returns {Node[]} Array with all HTML LaTeX nodes inside root.
+ * Finds and returns an array of text nodes containing LaTeX expressions.
+ *
+ * @param properties - The properties object.
+ * @param root - The root element to search within.
+ * @returns An array of text nodes containing LaTeX expressions.
  */
-function findLatexTextNodes(root: any): Node[] {
-  const nodeIterator: NodeIterator = document.createNodeIterator(root, NodeFilter.SHOW_TEXT, (node) =>
-    /(\$\$)(.*)(\$\$)/.test(node.nodeValue || "") ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT,
-  );
+function findLatexTextNodes(root: any, ignored_latex_containers: string | null): Node[] {
+  const nodeIterator: NodeIterator = createNodeIterator(root);
+  const blackListedNodes = root.querySelectorAll(ignored_latex_containers) ?? [];
   const latexNodes: Node[] = [];
 
   let currentNode: Node | null;
   while ((currentNode = nodeIterator.nextNode())) {
+    if (blackListedNodes.length > 0 && isNodeBlacklisted(currentNode, blackListedNodes)) {
+      continue;
+    }
     latexNodes.push(currentNode);
   }
 
   return latexNodes;
+}
+
+/**
+ * Creates a NodeIterator to find text nodes containing LaTeX expressions.
+ *
+ * @param root - The root element to search within.
+ * @returns A NodeIterator for text nodes containing LaTeX expressions.
+ */
+function createNodeIterator(root: any): NodeIterator {
+  return document.createNodeIterator(root, NodeFilter.SHOW_TEXT, (node) =>
+    /(\$\$)(.*)(\$\$)/.test(node.nodeValue || "") ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT,
+  );
+}
+
+/**
+ * Checks if a node or any of its ancestors are in the blacklist.
+ *
+ * @param node - The node to check.
+ * @param blackListedNodes - The list of blacklisted nodes.
+ * @returns True if the node or any of its ancestors are blacklisted, false otherwise.
+ */
+function isNodeBlacklisted(node: Node, blackListedNodes: NodeListOf<Element>): boolean {
+  return Array.from(blackListedNodes).some((blackListedNode) => blackListedNode.contains(node));
 }
 
 /**
