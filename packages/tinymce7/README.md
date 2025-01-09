@@ -21,7 +21,7 @@ Easily include quality math equations in your documents and digital content.
    npm install @wiris/mathtype-tinymce7
    ```
 
-   > MathType is fully compatible with TinyMCE 7 from version 7.5.0.
+   > MathType is fully compatible with TinyMCE 7 from version 7.6.0.
 
 2. Add the plugin as an external plugin:
 

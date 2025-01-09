@@ -116,13 +116,15 @@ jobs:
       fail-fast: false
       matrix:
         branch: ${{ fromJson(needs.prepare.outputs.branches) }}
-        editor: ["ckeditor4", "ckeditor5", "froala", "generic", "tinymce5", "tinymce6", "viewer"]
+        editor: ["ckeditor4", "ckeditor5", "froala", "generic", "tinymce5", "tinymce6", "tinymce7", "viewer"]
         framework: ["html", "vue"]
         exclude:
           - framework: vue
             editor: viewer
           - framework: vue
             editor: tinymce6
+          - framework: vue
+            editor: tinymce7
           - framework: vue
             editor: tinymce5
           - framework: vue
@@ -185,6 +187,9 @@ jobs:
               fi
               if [ "${{ matrix.editor }}" = "tinymce6" ]; then
                 aws s3 cp demos/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-tinymce6/plugin.min.js  s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-tinymce6/plugin.min.js
+              fi
+              if [ "${{ matrix.editor }}" = "tinymce7" ]; then
+                aws s3 cp demos/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-tinymce7/plugin.min.js  s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-tinymce7/plugin.min.js
               fi
               if [ "${{ matrix.editor }}" = "viewer" ]; then
                 aws s3 cp demos/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-viewer/dist/WIRISplugins.js s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-viewer/dist/WIRISplugins.js

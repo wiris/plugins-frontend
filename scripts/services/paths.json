@@ -73,5 +73,10 @@
     "path": "./demos/html/tinymce6/",
     "demo": true,
     "port": "8008"
+  },
+  "htmlTinyMCE7": {
+    "path": "./demos/html/tinymce7/",
+    "demo": true,
+    "port": "8009"
   }
 }

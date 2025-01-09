@@ -1,0 +1,19 @@
+body {
+  background-color: #e4e6e7;
+}
+
+.tox {
+  background-color: #fff !important;
+  border-radius: 10px;
+  margin: 0 auto !important;
+  max-width: 750px !important;
+  width: 75% !important;
+}
+
+.tox:hover {
+  box-shadow: 0 0 10px #7af78f;
+}
+
+#editor_ifr {
+  min-height: 200px;
+}

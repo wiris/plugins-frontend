@@ -1,0 +1,56 @@
+{
+  "name": "html-tinymce7",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "demos/html/tinymce7/src",
+  "targets": {
+    "prestart": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "prestart"
+      }
+    },
+    "prestart-remote": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "prestart-remote"
+      }
+    },
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "dependsOn": ["prestart"],
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "main": "demos/html/tinymce7/src/app.js",
+        "outputPath": "dist",
+        "tsConfig": "tsconfig.app.json",
+        "generateIndexHtml": false,
+        "index": "demos/html/tinymce7/index.html",
+        "webpackConfig": "demos/html/tinymce7/webpack.config.js"
+      }
+    },
+    "start": {
+      "executor": "@nx/webpack:dev-server",
+      "dependsOn": ["prestart"],
+      "options": {
+        "buildTarget": "html-tinymce7:build",
+        "webpackConfig": "demos/html/tinymce7/webpack.config.js"
+      }
+    },
+    "start-remote": {
+      "executor": "@nx/webpack:dev-server",
+      "dependsOn": ["prestart-remote"],
+      "options": {
+        "buildTarget": "html-tinymce7:build",
+        "webpackConfig": "demos/html/tinymce7/webpack.config.js"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "options": {
+        "eslintConfig": "./.eslintrc.js",
+        "lintFilePatterns": ["demos/html/tinymce7/**/*.{ts,tsx,js,jsx}"]
+      },
+      "outputs": ["{options.outputFile}"]
+    }
+  }
+}
