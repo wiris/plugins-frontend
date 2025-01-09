@@ -1,0 +1,35 @@
+{
+  "name": "tinymce7",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "package/tinymce7/src",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "dependsOn": [],
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "main": "demos/packages/tinymce7/global.js",
+        "outputPath": "dist",
+        "tsConfig": "tsconfig.app.json",
+        "generateIndexHtml": false,
+        "index": " ",
+        "webpackConfig": "packages/tinymce7/webpack.config.js"
+      }
+    },
+    "start": {
+      "executor": "@nx/webpack:dev-server",
+      "options": {
+        "buildTarget": "tinymce7:build",
+        "webpackConfig": "packages/tinymce7/webpack.config.js"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "options": {
+        "eslintConfig": "./.eslintrc.js",
+        "lintFilePatterns": ["packages/tinymce7/**/*.{ts,tsx,js,jsx}"]
+      },
+      "outputs": ["{options.outputFile}"]
+    }
+  }
+}

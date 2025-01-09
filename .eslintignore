@@ -6,6 +6,7 @@ output/**
 packages/generic/wirisplugin-generic.js
 packages/tinymce5/plugin.min.js
 packages/tinymce6/plugin.min.js
+packages/tinymce7/plugin.min.js
 packages/froala/wiris.js
 packages/ckeditor4/plugin.js
 packages/tinymce/editor_plugin.src.js

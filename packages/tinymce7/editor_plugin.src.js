@@ -115,7 +115,7 @@ export class TinyMceIntegration extends IntegrationModel {
     });
     this.getCore().addListener(listener);
 
-    // Deprecated part on TinyMCE6; We need to find a workaround
+    // Deprecated part on TinyMCE7; We need to find a workaround
     // Avoid filter formulas with performance enabled.
     dataImgFiltered[this.editorObject.id] = this.editorObject.images_dataimg_filter;
     this.editorObject.images_dataimg_filter = (img) => {
@@ -160,7 +160,7 @@ export class TinyMceIntegration extends IntegrationModel {
   /**
    * Set Moodle configuration on plugin.
    * @param {string} editor - Editor instance.
-   * @param {string} pluginName - TinyMCE 6 plugin name.
+   * @param {string} pluginName - TinyMCE 7 plugin name.
    */
   registerMoodleOption(editor, pluginName) {
     const registerOption = editor.options.register;
@@ -528,7 +528,7 @@ export const currentInstance = null;
               tooltip: StringManager.get("insert_chem", lang_code),
               onAction: commandFunction,
               image: WirisPlugin.instances[editor.id].getIconsPath() + customEditors.editors[customEditor].icon,
-              icon: chemTypeIcon, // At the moment only chemTypeIcon because of the provisional solution for TinyMCE6.
+              icon: chemTypeIcon, // At the moment only chemTypeIcon because of the provisional solution for TinyMCE7.
             });
           }
         }

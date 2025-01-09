@@ -1,0 +1,46 @@
+{
+  "name": "@wiris/mathtype-tinymce7",
+  "version": "8.11.1",
+  "description": "MathType Web for TinyMCE7 editor",
+  "keywords": [
+    "chem",
+    "chemistry",
+    "chemtype",
+    "editor",
+    "equation",
+    "latex",
+    "math",
+    "mathml",
+    "maths",
+    "mathtype",
+    "tinymce",
+    "tinymce7",
+    "wiris"
+  ],
+  "repository": "https://github.com/wiris/html-integrations/tree/master/packages/tinymce7",
+  "homepage": "www.wiris.com/?utm_source=npmjs&utm_medium=referral",
+  "bugs": {
+    "email": "support@wiris.com"
+  },
+  "license": "MIT",
+  "author": "WIRIS Team (www.wiris.com/?utm_source=npmjs&utm_medium=referral)",
+  "main": "plugin.min.js",
+  "scripts": {
+    "build": "webpack --mode production",
+    "build-dev": "webpack --mode development",
+    "clean": "shx rm -f plugin.min.js",
+    "prepack": "yarn && npm run build"
+  },
+  "dependencies": {
+    "@wiris/mathtype-html-integration-devkit": "1.17.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.4",
+    "@babel/preset-env": "^7.24.4",
+    "babel-loader": "^9.1.3",
+    "css-loader": "^7.1.0",
+    "shx": "^0.3.4",
+    "style-loader": "^4.0.0",
+    "terser-webpack-plugin": "^5.3.10"
+  }
+}

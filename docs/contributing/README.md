@@ -127,6 +127,7 @@ For brevity, `<scope>` will take one of these next values depending on the affec
 | `generic`   | `mathtype-generic`                 |
 | `tinymce5`  | `mathtype-tinymce5`                |
 | `tinymce6`  | `mathtype-tinymce6`                |
+| `tinymce7`  | `mathtype-tinymce7`                |
 
 There are usually a few exceptions to the above rules:
 

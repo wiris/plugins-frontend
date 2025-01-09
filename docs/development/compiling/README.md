@@ -43,7 +43,7 @@ You can also build the packages in development mode:
 $ nx build-dev <PACKAGE>
 ```
 
-> In case you haven't installed `nx`, you'll have to add `yarn` at the beggining of each one of the previous commands.
+> In case you haven't installed `nx`, you'll have to add `yarn` at the beginning of each one of the previous commands.
 
 Where PACKAGE can be:
 
@@ -53,6 +53,7 @@ Where PACKAGE can be:
 - generic
 - tinymce5
 - tinymce6
+- tinymce7
 
 ## Point to your own back-end
 

@@ -34,6 +34,11 @@
     "demo": false,
     "port": ""
   },
+  "mathTinyMCE7": {
+    "path": "./packages/tinymce7/",
+    "demo": false,
+    "port": ""
+  },
   "vueCKEditor5": {
     "path": "./demos/vue/ckeditor5/",
     "demo": true,
