@@ -19,7 +19,7 @@ interface FormulaData {
  */
 function findSafeMathMLTextNodes(root: HTMLElement): Node[] {
   const nodeIterator: NodeIterator = document.createNodeIterator(root, NodeFilter.SHOW_TEXT, (node) =>
-    /«math(.*?)«\/math»/g.test(node.nodeValue || "") ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT,
+    /«math([\s\S]*?)«\/math»/g.test(node.nodeValue || "") ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT,
   );
   const safeNodes: Node[] = [];
 
