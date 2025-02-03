@@ -121,11 +121,11 @@ export default class ModalDialog {
     this.closeDiv.setAttribute("role", "button");
     this.closeDiv.setAttribute("tabindex", 3);
     // Apply styles and events after the creation as createElement doesn't process them correctly
-    let generalStyle = `background-size: 10px; background-image: url(data:image/svg+xml;base64,${window.btoa(closeIcon)})`;
-    let hoverStyle = `background-size: 10px; background-image: url(data:image/svg+xml;base64,${window.btoa(closeHoverIcon)})`;
-    this.closeDiv.setAttribute("style", generalStyle);
-    this.closeDiv.setAttribute("onmouseover", `this.style = "${hoverStyle}";`);
-    this.closeDiv.setAttribute("onmouseout", `this.style = "${generalStyle}";`);
+    const generalStyleClose = `background-size: 10px; background-image: url(data:image/svg+xml;base64,${window.btoa(closeIcon)})`;
+    const hoverStyleClose = `background-size: 10px; background-image: url(data:image/svg+xml;base64,${window.btoa(closeHoverIcon)})`;
+    this.closeDiv.setAttribute("style", generalStyleClose);
+    this.closeDiv.addEventListener("mouseover", (e) => (e.target.style = hoverStyleClose));
+    this.closeDiv.addEventListener("mouseout", (e) => (e.target.style = generalStyleClose));
     // To identifiy the element in automated testing
     this.closeDiv.setAttribute("data-testid", "mtcteditor-close-button");
 
@@ -136,11 +136,11 @@ export default class ModalDialog {
     this.stackDiv = Util.createElement("a", attributes);
     this.stackDiv.setAttribute("role", "button");
     this.stackDiv.setAttribute("tabindex", 2);
-    generalStyle = `background-size: 10px; background-image: url(data:image/svg+xml;base64,${window.btoa(minsIcon)})`;
-    hoverStyle = `background-size: 10px; background-image: url(data:image/svg+xml;base64,${window.btoa(minsHoverIcon)})`;
-    this.stackDiv.setAttribute("style", generalStyle);
-    this.stackDiv.setAttribute("onmouseover", `this.style = "${hoverStyle}";`);
-    this.stackDiv.setAttribute("onmouseout", `this.style = "${generalStyle}";`);
+    const generalStyleStack = `background-size: 10px; background-image: url(data:image/svg+xml;base64,${window.btoa(minsIcon)})`;
+    const hoverStyleStack = `background-size: 10px; background-image: url(data:image/svg+xml;base64,${window.btoa(minsHoverIcon)})`;
+    this.stackDiv.setAttribute("style", generalStyleStack);
+    this.stackDiv.addEventListener("mouseover", (e) => (e.target.style = hoverStyleStack));
+    this.stackDiv.addEventListener("mouseout", (e) => (e.target.style = generalStyleStack));
     // To identifiy the element in automated testing
     this.stackDiv.setAttribute("data-testid", "mtcteditor-fullscreen-disable-button");
 
@@ -151,11 +151,11 @@ export default class ModalDialog {
     this.maximizeDiv = Util.createElement("a", attributes);
     this.maximizeDiv.setAttribute("role", "button");
     this.maximizeDiv.setAttribute("tabindex", 2);
-    generalStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(fullsIcon)})`;
-    hoverStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(fullsHoverIcon)})`;
-    this.maximizeDiv.setAttribute("style", generalStyle);
-    this.maximizeDiv.setAttribute("onmouseover", `this.style = "${hoverStyle}";`);
-    this.maximizeDiv.setAttribute("onmouseout", `this.style = "${generalStyle}";`);
+    const generalStyleMaximize = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(fullsIcon)})`;
+    const hoverStyleMaximize = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(fullsHoverIcon)})`;
+    this.maximizeDiv.setAttribute("style", generalStyleMaximize);
+    this.maximizeDiv.addEventListener("mouseover", (e) => (e.target.style = hoverStyleMaximize));
+    this.maximizeDiv.addEventListener("mouseout", (e) => (e.target.style = generalStyleMaximize));
     // To identifiy the element in automated testing
     this.maximizeDiv.setAttribute("data-testid", "mtcteditor-fullscreen-enable-button");
 
@@ -166,11 +166,11 @@ export default class ModalDialog {
     this.minimizeDiv = Util.createElement("a", attributes);
     this.minimizeDiv.setAttribute("role", "button");
     this.minimizeDiv.setAttribute("tabindex", 1);
-    generalStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(minIcon)})`;
-    hoverStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(minHoverIcon)})`;
-    this.minimizeDiv.setAttribute("style", generalStyle);
-    this.minimizeDiv.setAttribute("onmouseover", `this.style = "${hoverStyle}";`);
-    this.minimizeDiv.setAttribute("onmouseout", `this.style = "${generalStyle}";`);
+    const generalStyleMinimize = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(minIcon)})`;
+    const hoverStyleMinimize = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(minHoverIcon)})`;
+    this.minimizeDiv.setAttribute("style", generalStyleMinimize);
+    this.minimizeDiv.addEventListener("mouseover", (e) => (e.target.style = hoverStyleMinimize));
+    this.minimizeDiv.addEventListener("mouseout", (e) => (e.target.style = generalStyleMinimize));
     // To identify the element in automated testing
     this.minimizeDiv.setAttribute("data-testid", "mtcteditor-minimize-button");
 
@@ -796,8 +796,8 @@ export default class ModalDialog {
     const generalStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(minIcon)})`;
     const hoverStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(minHoverIcon)})`;
     this.minimizeDiv.setAttribute("style", generalStyle);
-    this.minimizeDiv.setAttribute("onmouseover", `this.style = "${hoverStyle}";`);
-    this.minimizeDiv.setAttribute("onmouseout", `this.style = "${generalStyle}";`);
+    this.minimizeDiv.addEventListener("mouseover", (e) => (e.target.style = hoverStyle));
+    this.minimizeDiv.addEventListener("mouseout", (e) => (e.target.style = generalStyle));
 
     this.restoreModalProperties();
 
@@ -847,8 +847,8 @@ export default class ModalDialog {
       const generalStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(maxIcon)})`;
       const hoverStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(maxHoverIcon)})`;
       this.minimizeDiv.setAttribute("style", generalStyle);
-      this.minimizeDiv.setAttribute("onmouseover", `this.style = "${hoverStyle}";`);
-      this.minimizeDiv.setAttribute("onmouseout", `this.style = "${generalStyle}";`);
+      this.minimizeDiv.addEventListener("mouseover", (e) => (e.target.style = hoverStyle));
+      this.minimizeDiv.addEventListener("mouseout", (e) => (e.target.style = generalStyle));
     }
   }
 
@@ -880,8 +880,8 @@ export default class ModalDialog {
     const generalStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(minIcon)})`;
     const hoverStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(minHoverIcon)})`;
     this.minimizeDiv.setAttribute("style", generalStyle);
-    this.minimizeDiv.setAttribute("onmouseover", `this.style = "${hoverStyle}";`);
-    this.minimizeDiv.setAttribute("onmouseout", `this.style = "${generalStyle}";`);
+    this.minimizeDiv.addEventListener("mouseover", (e) => (e.target.style = hoverStyle));
+    this.minimizeDiv.addEventListener("mouseout", (e) => (e.target.style = generalStyle));
 
     // Set size to 80% screen with a max size.
     this.setSize(parseInt(window.innerHeight * 0.8, 10), parseInt(window.innerWidth * 0.8, 10));
