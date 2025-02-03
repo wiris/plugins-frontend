@@ -58,6 +58,15 @@ export default class Util {
   }
 
   /**
+   * A map from event target to event handlers so we can remove the event
+   * listeners in removeElementEvents
+   *
+   * @type {Map<EventTarget, Object>}
+   * @static
+   */
+  static elementEventsMap = new Map();
+
+  /**
    * Adds the a callback function, for a certain event target, to the following event types:
    * - dblclick
    * - mousedown
@@ -69,28 +78,35 @@ export default class Util {
    * @static
    */
   static addElementEvents(eventTarget, doubleClickHandler, mousedownHandler, mouseupHandler) {
+    // Make sure not to leak event listeners if we've already added events to
+    // this element
+    Util.removeElementEvents(eventTarget);
+
+    let entry = {};
+    Util.elementEventsMap.set(eventTarget, entry);
+
     if (doubleClickHandler) {
-      this.callbackDblclick = (event) => {
+      entry.callbackDblclick = (event) => {
         const realEvent = event || window.event;
         const element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
         doubleClickHandler(element, realEvent);
       };
 
-      Util.addEvent(eventTarget, "dblclick", this.callbackDblclick);
+      Util.addEvent(eventTarget, "dblclick", entry.callbackDblclick);
     }
 
     if (mousedownHandler) {
-      this.callbackMousedown = (event) => {
+      entry.callbackMousedown = (event) => {
         const realEvent = event || window.event;
         const element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
         mousedownHandler(element, realEvent);
       };
 
-      Util.addEvent(eventTarget, "mousedown", this.callbackMousedown);
+      Util.addEvent(eventTarget, "mousedown", entry.callbackMousedown);
     }
 
     if (mouseupHandler) {
-      this.callbackMouseup = (event) => {
+      entry.callbackMouseup = (event) => {
         const realEvent = event || window.event;
         const element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
         mouseupHandler(element, realEvent);
@@ -99,8 +115,8 @@ export default class Util {
       // while the mouse is outside the editor text field.
       // This is a workaround: we trigger the event independently of where the mouse
       // is when we release its button.
-      Util.addEvent(document, "mouseup", this.callbackMouseup);
-      Util.addEvent(eventTarget, "mouseup", this.callbackMouseup);
+      Util.addEvent(document, "mouseup", entry.callbackMouseup);
+      Util.addEvent(eventTarget, "mouseup", entry.callbackMouseup);
     }
   }
 
@@ -113,10 +129,17 @@ export default class Util {
    * @static
    */
   static removeElementEvents(eventTarget) {
-    Util.removeEvent(eventTarget, "dblclick", this.callbackDblclick);
-    Util.removeEvent(eventTarget, "mousedown", this.callbackMousedown);
-    Util.removeEvent(document, "mouseup", this.callbackMouseup);
-    Util.removeEvent(eventTarget, "mouseup", this.callbackMouseup);
+    let entry = Util.elementEventsMap.get(eventTarget);
+    if (!entry) {
+      return;
+    }
+
+    Util.elementEventsMap.delete(eventTarget);
+
+    Util.removeEvent(eventTarget, "dblclick", entry.callbackDblclick);
+    Util.removeEvent(eventTarget, "mousedown", entry.callbackMousedown);
+    Util.removeEvent(document, "mouseup", entry.callbackMouseup);
+    Util.removeEvent(eventTarget, "mouseup", entry.callbackMouseup);
   }
 
   /**
