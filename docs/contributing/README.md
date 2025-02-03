@@ -203,3 +203,12 @@ The content of the commit message body should contain:
 
 [conv-commits]: https://www.conventionalcommits.org/en/v1.0.0/
 [github]: https://github.com/wiris/html-integrations
+
+## Software Dependencies Update Plan
+
+This project follows
+[MathType Integrations' Software Update Plan](https://docs.google.com/document/d/1UPzpMuTsobs9Rsy1KIQM2x0ShYJaUzSkpWt5-7RT1Yg/edit?pli=1&tab=t.0#heading=h.pkcqcs7fz27t).
+Please read the document and make sure you understand it completely.
+
+To learn about Software Dependencies Update Plan, please read the
+[Engineering Glossary](https://docs.google.com/document/d/1aIl7HxwxlJL9uQstJYZYmAWf8YW3td1RtP58RGrxU3E/edit#heading=h.1kq6jr8unr8h).
