@@ -102,8 +102,8 @@ export class FroalaIntegration extends IntegrationModel {
     super.init();
 
     // Create dynamic button id.
-    let mathTypeId = "wirisEditor-" + editor.id;
-    let chemTypeId = "wirisChemistry-" + editor.id;
+    const mathTypeId = `wirisEditor-${editor.id}`;
+    const chemTypeId = `wirisChemistry-${editor.id}`;
 
     // Hide MathType toolbar button if is disabled by config.
     if (!Configuration.get("editorEnabled")) {
@@ -160,7 +160,7 @@ export class FroalaIntegration extends IntegrationModel {
     super.callbackFunction();
 
     // Froala editor uses a clean up process to remove unwanted tags and attributes. We need to avoid this process for Wiris formulas. If we don't do this a loading pup-up will appear with the message "Uploading" that can be exited clicking away and also if the froala version is greater than 4.2.0 the formula will paste 2 times and make every paste behave like this.
-    this.editorObject.events.on("paste.beforeCleanup", function (clipboard_html) {
+    this.editorObject.events.on("paste.beforeCleanup", (clipboard_html) => {
       //* The regex pattern matches an image tag with the class attribute containing the 'Wirisformula' class.
       const regex = /<img[^>]*class\s*=\s*["'].*?\bWirisformula\b.*?["'][^>]*>/g;
       // If a Wiris formula is detected, return false to avoid the clean up process.

@@ -550,7 +550,7 @@ export default class Core {
 
     // Build the telemeter payload separated to delete null/undefined entries.
     const mathml = element?.dataset?.mathml;
-    let payload = {
+    const payload = {
       mathml_origin: mathmlOrigin ? MathML.safeXmlDecode(mathmlOrigin) : mathmlOrigin,
       mathml: mathml ? MathML.safeXmlDecode(mathml) : mathml,
       elapsed_time: Date.now() - this.editionProperties.editionStartTime,

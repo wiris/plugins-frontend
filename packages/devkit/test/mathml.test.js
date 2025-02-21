@@ -1,4 +1,5 @@
 import MathML from "../src/mathml";
+
 const constants = require("./const");
 
 test("Validate Math Hand formula", () => {

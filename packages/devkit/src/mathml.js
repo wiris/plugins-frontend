@@ -201,7 +201,8 @@ export default class MathML {
     // Otherwise without the space
     if (mathml.indexOf(` class="wrs_${customEditor}"`) !== -1) {
       return mathml.replace(` class="wrs_${customEditor}"`, "");
-    } else if (mathml.indexOf(`class="wrs_${customEditor}"`) !== -1) {
+    }
+    if (mathml.indexOf(`class="wrs_${customEditor}"`) !== -1) {
       return mathml.replace(`class="wrs_${customEditor}"`, "");
     }
 

@@ -1,4 +1,4 @@
-import init, { Telemeter as TelemeterWASM } from "../telemeter-wasm";
+import init, { Telemeter as TelemeterWASM } from "@wiris/telemeter-wasm";
 
 /**
  * @classdesc
@@ -38,7 +38,7 @@ export default class Telemeter {
     if (!this.telemeter) return;
 
     try {
-      let local_telemeter = this.telemeter;
+      const local_telemeter = this.telemeter;
       this.telemeter = undefined;
       await local_telemeter.finish();
     } catch (e) {

@@ -427,9 +427,9 @@ export default class Util {
    * @static
    */
   static htmlSanitize(html) {
-    let annotationRegex = /\<annotation.+\<\/annotation\>/;
+    const annotationRegex = /\<annotation.+\<\/annotation\>/;
     // Get all the annotation content including the tags.
-    let annotation = html.match(annotationRegex);
+    const annotation = html.match(annotationRegex);
     // Sanitize html code without removing our supported MathML tags and attributes.
     html = DOMPurify.sanitize(html, {
       ADD_TAGS: ["semantics", "annotation", "mstack", "msline", "msrow", "none"],
@@ -839,12 +839,13 @@ export default class Util {
             ) {
               node.childNodes[position - 1].remove();
               return Util.getSelectedItem(target, isIframe, forceGetSelection);
-            } else if (node.childNodes[position].classList?.contains("Wirisformula")) {
+            }
+            if (node.childNodes[position].classList?.contains("Wirisformula")) {
               if (
                 (position > 0 && node.childNodes[position - 1].classList?.contains("Wirisformula")) ||
                 position === 0
               ) {
-                var emptySpan = document.createElement("span");
+                const emptySpan = document.createElement("span");
                 node.insertBefore(emptySpan, node.childNodes[position]);
                 return {
                   node: node.childNodes[position],

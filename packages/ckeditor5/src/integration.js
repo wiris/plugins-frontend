@@ -256,20 +256,19 @@ export default class CKEditor5Integration extends IntegrationModel {
         // When Latex is next to image/formula.
         if (latexRange.startContainer.nodeType === 3 && latexRange.startContainer.previousSibling?.nodeType === 1) {
           // Get the position of the latex to be replaced.
-          let latexEdited =
-            "$$" +
-            Latex.getLatexFromMathML(MathML.safeXmlDecode(this.core.editionProperties.temporalImage.dataset.mathml)) +
-            "$$";
+          const latexEdited = `$$${Latex.getLatexFromMathML(
+            MathML.safeXmlDecode(this.core.editionProperties.temporalImage.dataset.mathml),
+          )}$$`;
           let data = latexRange.startContainer.data;
 
           // Remove invisible characters.
           data = data.replaceAll(String.fromCharCode(8288), "");
 
           // Get to the start of the latex we are editing.
-          let offset = data.indexOf(latexEdited);
-          let dataOffset = data.substring(offset);
-          let second$ = dataOffset.substring(2).indexOf("$$") + 4;
-          let substring = dataOffset.substr(0, second$);
+          const offset = data.indexOf(latexEdited);
+          const dataOffset = data.substring(offset);
+          const second$ = dataOffset.substring(2).indexOf("$$") + 4;
+          const substring = dataOffset.substr(0, second$);
           data = data.replace(substring, "");
 
           if (!data) {
@@ -301,7 +300,7 @@ export default class CKEditor5Integration extends IntegrationModel {
     }
 
     // Build the telemeter payload separated to delete null/undefined entries.
-    let payload = {
+    const payload = {
       mathml_origin: mathmlOrigin ? MathML.safeXmlDecode(mathmlOrigin) : mathmlOrigin,
       mathml: mathml ? MathML.safeXmlDecode(mathml) : mathml,
       elapsed_time: Date.now() - this.core.editionProperties.editionStartTime,

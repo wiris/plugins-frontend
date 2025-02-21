@@ -43,13 +43,13 @@ CKEDITOR.replace("editor", {
 });
 
 // Handle on editor ready event.
-CKEDITOR.on("instanceReady", function () {
+CKEDITOR.on("instanceReady", () => {
   //eslint-disable-line
   // Get and set the editor and wiris versions in this order.
   Generic.setEditorAndWirisVersion(CKEDITOR.version, WirisPlugin.currentInstance.version); //eslint-disable-line
 });
 
-CKEDITOR.instances.editor.on("instanceReady", function (evt) {
+CKEDITOR.instances.editor.on("instanceReady", (evt) => {
   evt.editor.setData(Generic.editorContentImg);
 });
 

@@ -219,7 +219,7 @@ export default class IntegrationModel {
     attributes = {};
     attributes.class = "wrs_modal_offline_warn";
     this.offlineModalWarn = Util.createElement("span", attributes);
-    let generalStyle = `background-image: url(data:image/svg+xml;base64,${window.btoa(warnIcon)})`;
+    const generalStyle = `background-image: url(data:image/svg+xml;base64,${window.btoa(warnIcon)})`;
     this.offlineModalWarn.setAttribute("style", generalStyle);
 
     attributes = {};
@@ -236,7 +236,7 @@ export default class IntegrationModel {
     this.offlineModalMessage2 = Util.createElement("p", attributes);
     this.offlineModalMessage2.innerHTML = `Thank you for using MathType. We have detected you are disconnected from the network. We remind you that you'll need to be connected to use MathType. <br /><br />Please refresh the page if this message continues appearing.`;
 
-    //Append offline modal elements
+    // Append offline modal elements
     this.offlineModalContent.appendChild(this.offlineModalClose);
     this.offlineModalMessage.appendChild(this.offlineModalMessage1);
     this.offlineModalMessage.appendChild(this.offlineModalMessage2);
@@ -245,8 +245,8 @@ export default class IntegrationModel {
     this.offlineModal.appendChild(this.offlineModalContent);
     document.body.appendChild(this.offlineModal);
 
-    let modal = document.getElementById("wrs_modal_offline");
-    this.offlineModalClose.addEventListener("click", function () {
+    const modal = document.getElementById("wrs_modal_offline");
+    this.offlineModalClose.addEventListener("click", () => {
       modal.style.display = "none";
     });
 
@@ -258,8 +258,8 @@ export default class IntegrationModel {
     let solutionTelemeter = editorName;
 
     // If moodle, add information to hosts and solution.
-    let isMoodle = !!(typeof M === "object" && M !== null),
-      lms;
+    const isMoodle = !!(typeof M === "object" && M !== null);
+    let lms;
 
     if (isMoodle) {
       solutionTelemeter = "Moodle";
@@ -276,10 +276,10 @@ export default class IntegrationModel {
     }
 
     // Get the OS and its version.
-    let OSData = this.getOS();
+    const OSData = this.getOS();
 
     // Get the broswer and its version.
-    let broswerData = this.getBrowser();
+    const broswerData = this.getBrowser();
 
     // Create list of hosts to send to telemetry.
     let hosts = [
@@ -306,7 +306,7 @@ export default class IntegrationModel {
     ];
 
     // Filter hosts to remove empty objects and empty keys.
-    hosts = hosts.filter(function (element) {
+    hosts = hosts.filter((element) => {
       if (element) Object.keys(element).forEach((key) => (element[key] === "unknown" ? delete element[key] : {}));
       return element !== undefined;
     });
@@ -314,10 +314,10 @@ export default class IntegrationModel {
     // Initialize telemeter
     Telemeter.init({
       solution: {
-        name: "MathType for " + solutionTelemeter,
+        name: `MathType for ${solutionTelemeter}`,
         version: this.version,
       },
-      hosts: hosts,
+      hosts,
       config: {
         test: false, // True to use the staging Telemetry endpoint instead of the production one.
         debug: false, // True to show more information about Telemeter's execution and use dev-tools.
@@ -335,15 +335,15 @@ export default class IntegrationModel {
    */
   getBrowser() {
     // default value for OS just in case nothing is detected
-    let detectedBrowser = "unknown",
-      versionBrowser = "unknown";
+    let detectedBrowser = "unknown";
+    let versionBrowser = "unknown";
 
-    let userAgent = window.navigator.userAgent;
+    const userAgent = window.navigator.userAgent;
 
     if (/Brave/.test(userAgent)) {
       detectedBrowser = "brave";
       if (userAgent.indexOf("Brave/")) {
-        let start = userAgent.indexOf("Brave") + 6;
+        const start = userAgent.indexOf("Brave") + 6;
         let end = userAgent.substring(start).indexOf(" ");
         end = end === -1 ? userAgent.lastIndexOf("") : end;
         versionBrowser = userAgent
@@ -353,7 +353,7 @@ export default class IntegrationModel {
       }
     } else if (userAgent.indexOf("Edg/") !== -1) {
       detectedBrowser = "edge_chromium";
-      let start = userAgent.indexOf("Edg/") + 4;
+      const start = userAgent.indexOf("Edg/") + 4;
       versionBrowser = userAgent
         .substring(start)
         .replace("_", ".")
@@ -361,7 +361,7 @@ export default class IntegrationModel {
     } else if (/Edg/.test(userAgent)) {
       detectedBrowser = "edge";
       let start = userAgent.indexOf("Edg") + 3;
-      start = start + userAgent.substring(start).indexOf("/");
+      start += userAgent.substring(start).indexOf("/");
       let end = userAgent.substring(start).indexOf(" ");
       end = end === -1 ? userAgent.lastIndexOf("") : end;
       versionBrowser = userAgent
@@ -378,7 +378,7 @@ export default class IntegrationModel {
       versionBrowser = userAgent.substring(start, end + start).replace("_", ".");
     } else if (/OPR/.test(userAgent)) {
       detectedBrowser = "opera";
-      let start = userAgent.indexOf("OPR/") + 4;
+      const start = userAgent.indexOf("OPR/") + 4;
       let end = userAgent.substring(start).indexOf(" ");
       end = end === -1 ? userAgent.lastIndexOf("") : end;
       versionBrowser = userAgent
@@ -412,22 +412,22 @@ export default class IntegrationModel {
    */
   getOS() {
     // default value for OS just in case nothing is detected
-    let detectedOS = "unknown",
-      versionOS = "unknown";
+    let detectedOS = "unknown";
+    let versionOS = "unknown";
 
     // Retrieve properties to easily detect the OS
-    let userAgent = window.navigator.userAgent,
-      platform = window.navigator.platform,
-      macosPlatforms = ["Macintosh", "MacIntel", "MacPPC", "Mac68K"],
-      windowsPlatforms = ["Win32", "Win64", "Windows", "WinCE"],
-      iosPlatforms = ["iPhone", "iPad", "iPod"];
+    const userAgent = window.navigator.userAgent;
+    const platform = window.navigator.platform;
+    const macosPlatforms = ["Macintosh", "MacIntel", "MacPPC", "Mac68K"];
+    const windowsPlatforms = ["Win32", "Win64", "Windows", "WinCE"];
+    const iosPlatforms = ["iPhone", "iPad", "iPod"];
 
     // Find OS and their respective versions
     if (macosPlatforms.indexOf(platform) !== -1) {
       detectedOS = "macos";
       if (userAgent.indexOf("OS X") !== -1) {
-        let start = userAgent.indexOf("OS X") + 5;
-        let end = userAgent.substring(start).indexOf(" ");
+        const start = userAgent.indexOf("OS X") + 5;
+        const end = userAgent.substring(start).indexOf(" ");
         versionOS = userAgent
           .substring(start, end + start)
           .replace("_", ".")
@@ -436,8 +436,8 @@ export default class IntegrationModel {
     } else if (iosPlatforms.indexOf(platform) !== -1) {
       detectedOS = "ios";
       if (userAgent.indexOf("OS ") !== -1) {
-        let start = userAgent.indexOf("OS ") + 3;
-        let end = userAgent.substring(start).indexOf(")");
+        const start = userAgent.indexOf("OS ") + 3;
+        const end = userAgent.substring(start).indexOf(")");
         versionOS = userAgent
           .substring(start, end + start)
           .replace("_", ".")
@@ -445,7 +445,7 @@ export default class IntegrationModel {
       }
     } else if (windowsPlatforms.indexOf(platform) !== -1) {
       detectedOS = "windows";
-      let start = userAgent.indexOf("Windows");
+      const start = userAgent.indexOf("Windows");
       let end = userAgent.substring(start).indexOf(";");
       if (end === -1) {
         end = userAgent.substring(start).indexOf(")");
@@ -456,7 +456,7 @@ export default class IntegrationModel {
         .replace(/[^\d.-]/g, "");
     } else if (/Android/.test(userAgent)) {
       detectedOS = "android";
-      let start = userAgent.indexOf("Android");
+      const start = userAgent.indexOf("Android");
       let end = userAgent.substring(start).indexOf(";");
       if (end === -1) {
         end = userAgent.substring(start).indexOf(")");
@@ -468,8 +468,8 @@ export default class IntegrationModel {
     } else if (/CrOS/.test(userAgent)) {
       detectedOS = "chromeos";
       let start = userAgent.indexOf("CrOS ") + 5;
-      start = start + userAgent.substring(start).indexOf(" ");
-      let end = userAgent.substring(start).indexOf(")");
+      start += userAgent.substring(start).indexOf(" ");
+      const end = userAgent.substring(start).indexOf(")");
       versionOS = userAgent
         .substring(start, end + start)
         .replace("_", ".")
@@ -560,7 +560,7 @@ export default class IntegrationModel {
       this.core.editionProperties.isNewElement = true;
       this.core.openModalDialog(this.target, this.isIframe);
     } else {
-      let modal = document.getElementById("wrs_modal_offline");
+      const modal = document.getElementById("wrs_modal_offline");
       modal.style.display = "block";
     }
   }
@@ -574,7 +574,7 @@ export default class IntegrationModel {
       this.core.editionProperties.isNewElement = false;
       this.core.openModalDialog(this.target, this.isIframe);
     } else {
-      let modal = document.getElementById("wrs_modal_offline");
+      const modal = document.getElementById("wrs_modal_offline");
       modal.style.display = "block";
     }
   }

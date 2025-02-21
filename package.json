@@ -12,7 +12,7 @@
     "test": "nx run-many --target=test --all --parallel",
     "test:ci": "docker run -v $PWD:/cypress --net=host -w /cypress -e CYPRESS_PROJECT_ID --entrypoint=cypress cypress/included:7.5.0 run  --project .",
     "build": "cd demos/html/generic && npm install && npm start &",
-    "lint": "prettier --write . --ignore-path .gitignore --ignore-path .prettierignore --ignore-path .eslintignore && nx run-many --target=lint --all --parallel"
+    "lint": "prettier --write . --ignore-path .gitignore --ignore-path .prettierignore --ignore-path .eslintignore && nx run-many --target=lint --all --parallel --fix"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.24.1",
@@ -28,11 +28,13 @@
     "clean-webpack-plugin": "^4.0.0",
     "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-jsdoc": "^48.2.3",
+    "eslint-plugin-prettier": "^5.2.1",
     "html-validate": "^8.18.1",
     "nx": "18.2.2",
-    "prettier": "3.2.5",
+    "prettier": "^3.3.3",
     "typescript": "~5.4.4"
   },
   "license": "MIT",

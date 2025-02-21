@@ -13,3 +13,4 @@ packages/tinymce/editor_plugin.src.js
 packages/devkit/doc/templates/**
 packages/devkit/out/**
 packages/devkit/core.js
+packages/devkit/telemeter-wasm/**

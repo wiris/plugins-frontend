@@ -39,15 +39,15 @@ $ nx start <FRAMEWORK>-<EDITOR>
 
 > In case you haven't installed `nx`, you'll have to add `yarn` at the beginning of each one of the previous commands.
 
-| FRAMEWORK | Editor and Version  | EDITOR/PACKAGE                                       |
-| --------- | ------------------- | ---------------------------------------------------- |
-| html      | CKEditor V4         | [ckeditor4](../../demos/html/ckeditor4)              |
-| html      | CKEditor V5         | [ckeditor5](../../demos/html/ckeditor5)              |
-| html      | Froala              | [froala](../../demos/html/froala)                    |
-| html      | Generic integration | [generic](../../demos/html/generic)                  |
-| html      | TinyMCE V5          | [tinymce5](../../demos/html/tinymce5)                |
-| html      | TinyMCE V6          | [tinymce6](../../demos/html/tinymce6)                |
-| vue       | CKEditor V5         | [ckeditor5](../../demos/vue/ckeditor5/README.md)     |
+| FRAMEWORK | Editor and Version  | EDITOR/PACKAGE                                   |
+| --------- | ------------------- | ------------------------------------------------ |
+| html      | CKEditor V4         | [ckeditor4](../../demos/html/ckeditor4)          |
+| html      | CKEditor V5         | [ckeditor5](../../demos/html/ckeditor5)          |
+| html      | Froala              | [froala](../../demos/html/froala)                |
+| html      | Generic integration | [generic](../../demos/html/generic)              |
+| html      | TinyMCE V5          | [tinymce5](../../demos/html/tinymce5)            |
+| html      | TinyMCE V6          | [tinymce6](../../demos/html/tinymce6)            |
+| vue       | CKEditor V5         | [ckeditor5](../../demos/vue/ckeditor5/README.md) |
 
 Each time you apply a change to a package and want to see the changes in your demo, you'll have to re-run the previous two commands.
 

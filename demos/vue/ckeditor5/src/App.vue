@@ -32,7 +32,7 @@ const content = Generic.editorContentMathML;
 const toolbar = ["bold", "italic", "link", "undo", "redo", "MathType", "ChemType", "sourceEditing"];
 const plugins = [Essentials, Bold, Italic, Link, Paragraph, MathType, SourceEditing];
 const editorConfig = {
-  licenseKey: 'GPL',
+  licenseKey: "GPL",
   iframe: true,
   charCounterCount: false,
   plugins,

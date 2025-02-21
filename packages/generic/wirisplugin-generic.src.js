@@ -114,8 +114,8 @@ export default class GenericIntegration extends IntegrationModel {
         // Call Telemetry service to track the event.
         try {
           await Telemeter.telemeter.track("OPENED_MTCT_EDITOR", {
-            toolbar: toolbar,
-            trigger: trigger,
+            toolbar,
+            trigger,
           });
         } catch (error) {
           console.error("Error tracking OPENED_MTCT_EDITOR", error);
@@ -140,8 +140,8 @@ export default class GenericIntegration extends IntegrationModel {
 
       try {
         await Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
-          toolbar: toolbar,
-          trigger: trigger,
+          toolbar,
+          trigger,
         });
       } catch (error) {
         console.error("Error tracking CLOSED_MTCT_EDITOR", error);
@@ -161,12 +161,12 @@ export default class GenericIntegration extends IntegrationModel {
       // Check that the manual string inputs contain the values we want, if not throw error.
       if (validToolbar && validDate) {
         // Build the telemeter payload separated to delete null/undefined entries.
-        let payload = {
+        const payload = {
           mathml_origin: mathml_origin ? MathML.safeXmlDecode(mathml_origin) : mathml_origin,
           mathml: mathml ? MathML.safeXmlDecode(mathml) : mathml,
           elapsed_time: time,
           editor_origin: null,
-          toolbar: toolbar,
+          toolbar,
           size: mathml?.length,
         };
 

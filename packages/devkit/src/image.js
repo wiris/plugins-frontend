@@ -194,7 +194,7 @@ export default class Image {
       processImg(img);
       // if it does contain a blob, then read that, replace the src with the decoded content, and process it
     } else {
-      let reader = new FileReader();
+      const reader = new FileReader();
       reader.onload = function () {
         img.setAttribute("src", reader.result);
         processImg(img);

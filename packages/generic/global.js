@@ -10,8 +10,8 @@ import Test from "@wiris/mathtype-html-integration-devkit/src/test";
 /** Don't delete this - non used - imports. */
 import "@wiris/mathtype-html-integration-devkit/src/backwardslib";
 import "@wiris/mathtype-html-integration-devkit/src/polyfills";
-import GenericIntegration, { currentInstance } from "./wirisplugin-generic.src";
 import MathML from "@wiris/mathtype-html-integration-devkit/src/mathml";
+import GenericIntegration, { currentInstance } from "./wirisplugin-generic.src";
 
 Configuration.set("parseModes", "latex");
 

@@ -380,7 +380,7 @@ export class CKEditor4Integration extends IntegrationModel {
       });
 
       // Parse the editor content after copy & paste / drag & drop
-      editor.on("afterPaste", function (event) {
+      editor.on("afterPaste", (event) => {
         editor.setData(Parser.initParse(editor.getData()));
       });
     },

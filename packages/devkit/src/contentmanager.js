@@ -468,7 +468,7 @@ export default class ContentManager {
     } else {
       this.setMathML(this.mathML);
     }
-    let toolbar = this.updateToolbar();
+    const toolbar = this.updateToolbar();
     this.onFocus();
 
     if (this.deviceProperties.isIOS) {
@@ -480,13 +480,13 @@ export default class ContentManager {
       }
     }
 
-    let trigger = this.dbclick ? "formula" : "button";
+    const trigger = this.dbclick ? "formula" : "button";
 
     // Call Telemetry service to track the event.
     try {
       Telemeter.telemeter.track("OPENED_MTCT_EDITOR", {
-        toolbar: toolbar,
-        trigger: trigger,
+        toolbar,
+        trigger,
       });
     } catch (error) {
       console.error("Error tracking OPENED_MTCT_EDITOR", error);
@@ -722,14 +722,12 @@ export default class ContentManager {
           this.modalDialogInstance.closeDiv.focus();
           keyboardEvent.stopPropagation();
           keyboardEvent.preventDefault();
-        } else {
-          if (document.activeElement === this.modalDialogInstance.minimizeDiv) {
-            // Focus on cancel button.
-            if (!(this.modalDialogInstance.properties.state === "minimized")) {
-              this.modalDialogInstance.cancelButton.focus();
-              keyboardEvent.stopPropagation();
-              keyboardEvent.preventDefault();
-            }
+        } else if (document.activeElement === this.modalDialogInstance.minimizeDiv) {
+          // Focus on cancel button.
+          if (!(this.modalDialogInstance.properties.state === "minimized")) {
+            this.modalDialogInstance.cancelButton.focus();
+            keyboardEvent.stopPropagation();
+            keyboardEvent.preventDefault();
           }
         }
       } else if (keyboardEvent.key === "Tab") {

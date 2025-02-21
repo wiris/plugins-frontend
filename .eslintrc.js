@@ -13,7 +13,7 @@ module.exports = {
     tinymce: "readonly",
     CKEDITOR: "readonly",
     FroalaEditor: "readonly",
-  },
+  }, // Variables that will be used in the code but are not declared in the code.
   parserOptions: {
     ecmaVersion: 6, // We use version-based naming instead of year-based naming.
     sourceType: "module", // This project's code is in ECMAScript modules.
