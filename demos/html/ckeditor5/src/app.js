@@ -1,5 +1,20 @@
 // Load scripts.
-import { ClassicEditor, Essentials, Paragraph, Bold, Italic, Alignment, SourceEditing } from "ckeditor5";
+import {
+  ClassicEditor,
+  Image,
+  ImageCaption,
+  ImageResize,
+  ImageStyle,
+  ImageToolbar,
+  LinkImage,
+  Essentials,
+  Paragraph,
+  Bold,
+  Italic,
+  Alignment,
+  SourceEditing,
+  ImageUpload,
+} from "ckeditor5";
 import MathType from "@wiris/mathtype-ckeditor5/dist/index.js";
 
 // Load styles.
@@ -27,7 +42,22 @@ window.editor = null;
 // Create the CKEditor 5.
 ClassicEditor.create(document.querySelector("#editor"), {
   licenseKey: "GPL",
-  plugins: [Essentials, Paragraph, Bold, Italic, MathType, Alignment, SourceEditing],
+  plugins: [
+    Essentials,
+    Image,
+    ImageCaption,
+    ImageResize,
+    ImageStyle,
+    ImageToolbar,
+    LinkImage,
+    Paragraph,
+    Bold,
+    Italic,
+    MathType,
+    Alignment,
+    SourceEditing,
+    ImageUpload,
+  ],
   toolbar: [
     "bold",
     "italic",
@@ -37,7 +67,11 @@ ClassicEditor.create(document.querySelector("#editor"), {
     "alignment:center",
     "alignment:right",
     "sourceEditing",
+    "insertImage",
   ],
+  image: {
+    // Configuration.
+  },
   // language: 'de',
   // mathTypeParameters: {
   //   editorParameters: { language: 'es' }, // MathType config, including language

@@ -121,6 +121,8 @@
 
 .wrs_modal_dialogContainer.wrs_modal_desktop{
   font-size:14px;
+  display:flex;
+  flex-flow:column;
 }
 
 .wrs_modal_dialogContainer.wrs_modal_desktop.wrs_maximized{
@@ -197,6 +199,7 @@
   flex-grow:1;
   display:flex;
   flex-direction:column;
+  height:auto !important;
 }
 
 .wrs_modal_dialogContainer.wrs_modal_badStock{
@@ -331,6 +334,7 @@
   margin:6px;
   display:flex;
   flex-direction:column;
+  flex-grow:1;
 }
 
 .wrs_modal_wrapper.wrs_modal_desktop.wrs_minimized{
