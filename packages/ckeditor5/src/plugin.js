@@ -61,8 +61,10 @@ export default class MathType extends Plugin {
    * Inherited from Plugin class: Executed when CKEditor5 is destroyed
    */
   destroy() {
-    // eslint-disable-line class-methods-use-this
-    currentInstance.destroy();
+    if (currentInstance) {
+      // eslint-disable-line class-methods-use-this
+      currentInstance.destroy();
+    }
   }
 
   /**
