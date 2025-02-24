@@ -26,11 +26,7 @@ Easily include quality math equations in your documents and digital content.
 2. Add the plugin as an external plugin:
 
    ```js
-   tinymce.init({
-     external_plugins: {
-       tiny_mce_wiris: `node_modules/@wiris/mathtype-tinymce7/plugin.min.js`,
-     },
-   });
+   tinymce.init({ external_plugins: { tiny_mce_wiris: `node_modules/@wiris/mathtype-tinymce7/plugin.min.js` } });
    ```
 
 3. Add MathType buttons to the TinyMCE7 toolbar and the recommended settings:
@@ -47,6 +43,9 @@ Easily include quality math equations in your documents and digital content.
      // Not enabling this, will provide formulas from being created and rendered.
      extended_valid_elements: "*[.*]",
      valid_elements: "*[*]",
+     // This option prevents the DOMPurify library from filtering wiris MathML tags.
+     // It's necessary when you want to initialize the editor with a content that contains handwritten formulas.
+     allow_mathml_annotation_encodings: ["wiris", "application/json"],
 
      // You could set a different language for MathType editor:
      // language: 'fr_FR',
